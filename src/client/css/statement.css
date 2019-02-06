@@ -1,0 +1,57 @@
+
+
+.acct-name {
+    margin-left: 20px;
+    width: 50%;
+    display: inline-block;
+}
+
+.acct-total {
+    width: 25%;
+    display: inline-block;
+    text-align: right;
+}
+
+.subtotal {
+    margin-left: 90px;
+    width: 25%;
+    display: inline-block;
+    text-align: right;
+}
+
+.total-header {
+    width: 50%;
+    display: inline-block;
+}
+
+
+
+/*
+#statementField {
+    display: grid;
+    grid-template-columns: 10% auto 25%;
+    grid-template-rows: 10% 90%;
+    padding: 10px;
+}
+
+.acct-name {
+    grid-column-start: 1;
+    grid-column-end: column3-end;
+    grid-row-start: 2;
+    grid-row-end: row2-end;
+}
+
+.acct-name {
+    grid-column-start: 2;
+    grid-column-end: column2-end;
+    grid-row-start: 2;
+    grid-row-end: row2-end;
+}
+
+.acct-total {
+    grid-column-start: 3;
+    grid-column-end: column3-end;
+    grid-row-start: 2;
+    grid-row-end: row2-end;
+}
+*/
