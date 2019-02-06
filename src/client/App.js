@@ -4,6 +4,8 @@ import ValRules from 'Util/ValRules'
 import EB from 'Util/EB'
 import checkLoginState from 'Util/CheckLoginState'
 import Home from './mainmenu/home'
+import {StripeProvider} from 'react-stripe-elements'
+
 import 'css/main.css'
 import 'css/userNotify.css'
 
@@ -70,7 +72,9 @@ class AppreciateCo extends React.Component {
         <div>
           {this.state.isLoggedIn ? (
           <EB comp="Home">
-            <Home userData={this.state.userData} />
+          <StripeProvider apiKey="pk_test_UowOO8ZyEHQ6VMfYZ9psi6C7">
+              <Home  />
+          </StripeProvider>
           </EB>
           ) : (
               <div id="sign-in">

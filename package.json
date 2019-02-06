@@ -8,7 +8,6 @@
     "build": "npm run build:prod && npm run start-server:prod",
     "build:dev": "webpack --config webpack-dev.config.js",
     "build:prod": "webpack --config webpack-prod.config.js",
-    
     "start-server:dev": "NODE_ENV=development nodemon --config nodemon.json --experimental-modules src/server/index.mjs ",
     "start-server:prod": "NODE_ENV=production forever start forever-config.json"
   },
@@ -31,9 +30,9 @@
     "react-dom": "^16.7.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
+    "react-stripe-elements": "^2.0.3",
     "react-table": "^6.8.5",
     "router-express": "^1.5.2",
-    "session-file-store": "^1.2.0",
     "stripe": "^6.23.1",
     "uuid": "^3.3.2"
   },

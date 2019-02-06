@@ -7,7 +7,6 @@ import AutoFill from './AutoFill'
 import 'css/workingPane.css'
 import 'css/form.css'
 import 'css/userNotify.css'
-import 'css/lsr.css'
 
 class FormClass extends React.Component{
   constructor(props) {

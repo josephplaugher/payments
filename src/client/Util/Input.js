@@ -18,10 +18,10 @@ class Input extends React.Component {
         <p className="label">{this.props.label} </p>
         <p className='input-error'>{this.props.error} </p>
         <input className="textinput" 
-          type= {type}
-          id= {this.props.name} 
-          name= {this.props.name} 
-          value= {this.props.value}
+          type={type}
+          id={this.props.name} 
+          name={this.props.name} 
+          value={this.props.value}
           onChange={this.props.onChange}
           autoComplete="off"
           className="textinput"

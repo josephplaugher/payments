@@ -41,6 +41,9 @@ app.get('/checkLoginState', Auth, (req, res) => {
   res.status(200).json({checkLoginState: 'done'});
 });
 
+app.post('/pay', (req, res) => {
+  res.status(200).json({response: req.body});
+})
 //all these routes require a valid cookie and token
 //app.use('/', Auth, transCont);
 
