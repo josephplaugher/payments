@@ -19,14 +19,14 @@ class CheckoutForm extends React.Component {
         this.route = '/pay'
         this.valRules = ValRules
         this.state = {
-            invoice: '',
-            amount: '',
-            creditCard: '',
-            exp: '',
-            CSV: ''
+            userErrors: {},
+            invoice: 'test',
+            amount: '500',
+            chargeComplete: ''
         };
         this.onChange = this.onChange.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
+        this.sendToken = this.sendToken.bind(this)
         this.response = this.response.bind(this)
     }
 
@@ -39,26 +39,53 @@ class CheckoutForm extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.stripe.createToken({
-            type: 'card', 
-            owner: {
-               name: 'Jenny Rosen'
-            }
-        }).then( token => {
-            console.log('Received Stripe token:', token);
+        const data = {
+            invoice: this.state.invoice,
+            amount: this.state.amount
+        }
+        let val = new Validate(data, this.valRules);
+        let prom = val.isError();
+        prom.then( (error) => {
+        if(error.hasError){ 
+            // if there a problem with the invoice number or amount, stop the flow
+          this.setState({
+            userNotify: error,
+          })
+        } else {
+            // after the invoice number and amount are validated
+            // create the token
+            this.props.stripe.createToken({
+                type: 'card', name: 'Jenny Rosen'
+            })
+            .then( token => {
+                if(token.error) {
+                    console.log('stripe error: ', token.error)
+                    this.setState({
+                        userErrors:{
+                            stripeInputError: error.message
+                            }
+                        })
+                }
+                if(typeof token.error === 'undefined') {
+                    console.log('Received Stripe token:', token)   
+                    this.sendToken(token, data)            
+                }
+            })
+        }
         })
+    }
 
-        // let data = {
-        //     invoice: this.state.invoice,
-        //     amount: this.state.amount
-        // }
-        // Ajax.post(SetUrl() + this.route, data)
-        //     .then((res) => {
-        //         this.response(res)
-        //     })
+    sendToken = (token, data) => {
+        data.token = token
+        console.log('the data: ', data)
+        Ajax.post(SetUrl() + this.route, data)
+            .then((res) => {
+                this.response(res)
+            })
     }
 
     response = (res) => {
+        this.setState({chargeComplete: 'Payment Complete, Thank You!'})
         console.log(res)
     }
 
@@ -67,11 +94,14 @@ class CheckoutForm extends React.Component {
         return (
 
             <form onSubmit={this.onSubmit} >
-                <Input name="invoice" label="Invoice Number" value={this.state.invoice} onChange={this.onChange} />
-                <Input name="amount" label="Payment Amount" value={this.state.amount} onChange={this.onChange} /><br/>
-                <StripeInput label="Credit Card"/>
+                <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
+                <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br/>
+                <StripeInput label="Credit Card" error={this.state.userErrors.stripeInputError}/>
                 <div className="button-div">
                     <Button value="Pay Now" id="submit" />
+                </div>
+                <div id="user-notify">
+                    <p className="success-msg">{this.state.chargeComplete}</p>
                 </div>
             </form>
         )

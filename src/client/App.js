@@ -12,14 +12,17 @@ import 'css/userNotify.css'
 class AppreciateCo extends React.Component {
   constructor(props) {
     super(props);
+    this.stripeKey = ''
     this.state = {
       error: null,
       isLoggedIn: true,
       userData: {}
     }
-    this.setLoginState = this.setLoginState.bind(this);
-    this.response = this.response.bind(this);
+    this.setLoginState = this.setLoginState.bind(this)
+    this.response = this.response.bind(this)
     //this.setLoginState();
+    this.setStripeKey = this.setStripeKey.bind(this)
+    this.setStripeKey()
   }
 
   setLoginState = () => {
@@ -64,6 +67,14 @@ class AppreciateCo extends React.Component {
     }
   }
 
+  setStripeKey = () => {
+    if(process.env.NODE_ENV === 'production') {
+      this.stripeKey = process.env.STRIPE_PUB_KEY
+    } else {
+      this.stripeKey = process.env.STRIPE_TEST_KEY
+    }
+  }
+
   render() {
 
     return (
@@ -72,7 +83,7 @@ class AppreciateCo extends React.Component {
         <div>
           {this.state.isLoggedIn ? (
           <EB comp="Home">
-          <StripeProvider apiKey="pk_test_UowOO8ZyEHQ6VMfYZ9psi6C7">
+          <StripeProvider apiKey={this.stripeKey}>
               <Home  />
           </StripeProvider>
           </EB>

@@ -49,8 +49,20 @@
     position: absolute;
 }
 
-.errorMsg {
+#user-notify {
+    grid-column-start: 2;
+    grid-column-end: 3;
+    grid-row-start: row2-end;
+    margin: 12px;
+}
+
+.error-msg {
     color: red;
+}
+
+.success-msg {
+    color: #2665C4;
+    
 }
 
 .submit {
@@ -65,6 +77,6 @@
 }
 
 .button-div {
-    margin-left: 60px;
+    margin-left: 12px;
     margin-top: 20px;
 }
