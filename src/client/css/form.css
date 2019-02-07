@@ -26,6 +26,10 @@
 
 .input-container {
     display: inline-block;
+    margin: 12px;
+}
+
+#stripCCContainer {
     margin: 8px;
 }
 

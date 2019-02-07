@@ -1,21 +1,15 @@
 import React from 'react';
+import {CardElement} from 'react-stripe-elements'
   
 class StripeInput extends React.Component {
 
   render() {
 
       return (
-        <div className="input-container">
+        <div id="stripCCContainer">
         <p className="label">{this.props.label} </p>
         <p className='input-error'>{this.props.error} </p>
-        <input className="textinput" 
-          type="text"
-          id={this.props.id} 
-          value={this.props.value}
-          onChange={this.props.onChange}
-          autoComplete="off"
-          className="textinput"
-        />
+        <CardElement className="textinput"/>
         </div>
       );
     }

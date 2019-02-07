@@ -6,7 +6,7 @@ import Validate from 'Util/Validate'
 import ValRules from 'Util/ValRules'
 import Ajax from 'Util/Ajax'
 import SetUrl from 'Util/SetUrl'
-import {injectStripe} from 'react-stripe-elements';
+import {injectStripe} from 'react-stripe-elements'
 
 import 'css/main.css'
 import 'css/logo.css'
@@ -39,18 +39,23 @@ class CheckoutForm extends React.Component {
 
     onSubmit = (event) => {
         event.preventDefault()
-        this.props.stripe.createSource({type: 'card', owner: {
+        this.props.stripe.createToken({
+            type: 'card', 
+            owner: {
                name: 'Jenny Rosen'
-             }});
+            }
+        }).then( token => {
+            console.log('Received Stripe token:', token);
+        })
 
-        let data = {
-            invoice: this.state.invoice,
-            amount: this.state.amount
-        }
-        Ajax.post(SetUrl() + this.route, data)
-            .then((res) => {
-                this.response(res)
-            })
+        // let data = {
+        //     invoice: this.state.invoice,
+        //     amount: this.state.amount
+        // }
+        // Ajax.post(SetUrl() + this.route, data)
+        //     .then((res) => {
+        //         this.response(res)
+        //     })
     }
 
     response = (res) => {
@@ -62,11 +67,9 @@ class CheckoutForm extends React.Component {
         return (
 
             <form onSubmit={this.onSubmit} >
-                <Input name="invoice" label="Invoice Number" value={this.state.invoice} onChange={this.onChange} /><br />
-                <Input name="amount" label="Payment Amount" value={this.state.amount} onChange={this.onChange} /><br /><br />
-                <StripeInput id="creditCard" label="Credit Card Number" value={this.state.creditCard} onChange={this.onChange} /><br />
-                <StripeInput id="exp" label="Expiration Date" value={this.state.exp} onChange={this.onChange} /><br />
-                <StripeInput id="CSV" label="CSV" value={this.state.CSV} onChange={this.onChange} />
+                <Input name="invoice" label="Invoice Number" value={this.state.invoice} onChange={this.onChange} />
+                <Input name="amount" label="Payment Amount" value={this.state.amount} onChange={this.onChange} /><br/>
+                <StripeInput label="Credit Card"/>
                 <div className="button-div">
                     <Button value="Pay Now" id="submit" />
                 </div>
