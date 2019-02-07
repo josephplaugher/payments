@@ -10,7 +10,7 @@ class StripeInput extends React.Component {
         <p className='input-error'>{this.props.error} </p>
         <input className="textinput" 
           type="text"
-          id={this.props.name} 
+          id={this.props.id} 
           value={this.props.value}
           onChange={this.props.onChange}
           autoComplete="off"
