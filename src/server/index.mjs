@@ -6,7 +6,7 @@ const app = express()
 import cookieParser from 'cookie-parser'
 import Auth from './util/Auth'
 //import login from'./model/users/login'
-//import transCont from'./controllers/transCont.js'
+import transCont from './controllers/transCont'
 
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
@@ -41,9 +41,7 @@ app.get('/checkLoginState', Auth, (req, res) => {
   res.status(200).json({checkLoginState: 'done'});
 });
 
-app.post('/pay', (req, res) => {
-  res.status(200).json({response: req.body});
-})
+app.use('/', transCont)
 //all these routes require a valid cookie and token
 //app.use('/', Auth, transCont);
 
