@@ -5,7 +5,6 @@ import {
   Link
 } from 'react-router-dom'
 import CheckoutForm from './CheckoutForm'
-import {Elements} from 'react-stripe-elements'
 
 class Home extends React.Component {
  
@@ -13,11 +12,18 @@ class Home extends React.Component {
 
     return (
       <div id="home-container">
-      <div id="pay-container">
-        <Elements>
-          <CheckoutForm />
-        </Elements>
-      </div>
+      <Router>
+        <div id="nav-pane">
+          <Link to="/cc" className="nav">Credit Card</Link>
+            <Route path="/cc" 
+              render={(props) => <CheckoutForm {...props} method="CC"/>}
+              />
+          <br/><Link to="/ach" className="nav">ACH</Link>
+            <Route path="/ach" 
+              render={(props) => <CheckoutForm {...props} method="ACH"/>}
+              />
+        </div>
+      </Router>  
       </div>
     )
   }

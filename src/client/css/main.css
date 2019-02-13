@@ -1,30 +1,30 @@
 #home-container {
     display: grid;
     grid-template-columns: 30% auto 30%;
-    grid-template-rows: 20% auto 20%;
+    grid-template-rows: 20% auto 5%;
     padding: 10px;
 }
 
-#pay-container {
+#nav-pane {
     grid-column-start: 2;
     grid-column-end: 3;
-    grid-row-start: 2;
-    grid-row-end: 2;
-}
-
-#nav-pane {
-    border: .5px solid #2665C4;
-    border-radius: 5px;
-    width: 20%;
-    margin: 5px;
+    grid-row-start: 3;
+    grid-row-end: row3-end;
 }
 
 .nav {
+    border: .5px solid #2665C4;
+    border-radius: 5px;
     color: #2665C4;
-    font-size: 14px;
-    text-align: left;
-    padding-left: 5px;
+    font-size: 18px;
+    text-align: center;
+    display: block;
+    padding: 10px;
     text-decoration: none;
+}
+
+#form-container {
+    margin-top: 50px;
 }
 
 .userNotify{

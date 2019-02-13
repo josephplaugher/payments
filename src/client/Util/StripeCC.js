@@ -1,7 +1,8 @@
 import React from 'react';
 import {CardElement} from 'react-stripe-elements'
-  
-class StripeInput extends React.Component {
+import {injectStripe} from 'react-stripe-elements'
+
+class StripeCC extends React.Component {
 
   render() {
 
@@ -15,4 +16,4 @@ class StripeInput extends React.Component {
     }
   }  
 
-export default StripeInput;
+export default injectStripe(StripeCC);

@@ -6,7 +6,7 @@ import Validate from 'Util/Validate'
 import ValRules from 'Util/ValRules'
 import Ajax from 'Util/Ajax'
 import SetUrl from 'Util/SetUrl'
-import {injectStripe} from 'react-stripe-elements'
+import {Elements} from 'react-stripe-elements'
 
 import 'css/main.css'
 import 'css/logo.css'
@@ -92,11 +92,30 @@ class CheckoutForm extends React.Component {
     render() {
 
         return (
-
+            <div id="form-container">            
             <form onSubmit={this.onSubmit} >
+                
+                {this.props.method === "CC" ? 
+                <>
                 <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
                 <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br/>
+                <Elements>
                 <StripeCC label="Credit Card" error={this.state.userErrors.stripeInputError}/>
+                </Elements>
+                </>
+                : (null)}
+                
+                {this.props.method === "ACH" ? 
+                <>
+                <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
+                <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br/>
+                <Elements>
+                <h>ACH</h>
+                </Elements>
+                {/*<StripeCC label="Credit Card" error={this.state.userErrors.stripeInputError}/>*/}
+                </>
+                : (null)}
+               
                 <div className="button-div">
                     <Button value="Pay Now" id="submit" />
                 </div>
@@ -104,8 +123,9 @@ class CheckoutForm extends React.Component {
                     <p className="success-msg">{this.state.chargeComplete}</p>
                 </div>
             </form>
+            </div>
         )
     }
 }
 
-export default injectStripe(CheckoutForm)
+export default CheckoutForm
