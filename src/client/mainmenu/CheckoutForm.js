@@ -1,6 +1,6 @@
 import React from 'react'
 import Input from 'Util/Input'
-import StripeInput from 'Util/StripeInput'
+import StripeCC from 'Util/StripeCC'
 import Button from 'Util/Button'
 import Validate from 'Util/Validate'
 import ValRules from 'Util/ValRules'
@@ -96,7 +96,7 @@ class CheckoutForm extends React.Component {
             <form onSubmit={this.onSubmit} >
                 <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
                 <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br/>
-                <StripeInput label="Credit Card" error={this.state.userErrors.stripeInputError}/>
+                <StripeCC label="Credit Card" error={this.state.userErrors.stripeInputError}/>
                 <div className="button-div">
                     <Button value="Pay Now" id="submit" />
                 </div>

@@ -15,7 +15,7 @@ class Home extends React.Component {
       <div id="home-container">
       <div id="pay-container">
         <Elements>
-          <CheckoutForm/>
+          <CheckoutForm />
         </Elements>
       </div>
       </div>
