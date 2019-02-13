@@ -7,7 +7,7 @@ import Validate from 'Util/Validate'
 import ValRules from 'Util/ValRules'
 import Ajax from 'Util/Ajax'
 import SetUrl from 'Util/SetUrl'
-import { Elements } from 'react-stripe-elements'
+import { Elements, injectStripe } from 'react-stripe-elements'
 
 import 'css/main.css'
 import 'css/logo.css'
@@ -162,4 +162,4 @@ class CheckoutForm extends React.Component {
     }
 }
 
-export default CheckoutForm
+export default injectStripe(CheckoutForm)
