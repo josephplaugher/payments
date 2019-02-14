@@ -1,25 +1,14 @@
-import Stripe from 'stripe'
+import SetStripeKey from './SetStripeKey'
 
 class CreateCharge {
   constructor(req, res) {
     this.req = req
     this.res = res
-    this.stripe = ''
-    this.setStripeKey()
+    this.stripe = SetStripeKey()
   }
 
   response(resp) {
     this.res.status(200).json({resp })
-  }
-
-  setStripeKey() {
-    var stripeKey
-    if (process.env.NODE_ENV === 'production') {
-      stripeKey = process.env.STRIPE_SECRET_KEY
-    } else {
-      stripeKey = process.env.STRIPE_SECRET_TEST_KEY
-    }
-    this.stripe = new Stripe(stripeKey)
   }
 
   charge() {
@@ -36,7 +25,7 @@ class CreateCharge {
         self.response({error: error})
       } else {
         console.log('charge: ', charge)
-        self.response({charge: charge})
+        self.response({charge: charge, userNotify: 'message'})
       }
     })
     

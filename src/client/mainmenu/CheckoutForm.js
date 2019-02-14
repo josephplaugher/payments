@@ -57,6 +57,8 @@ class CheckoutForm extends React.Component {
                 // after the invoice number and amount are validated
                 // create the token
                 if (this.props.method === 'CC') {
+                    /**the credit card token function isn't working. not sure why */
+                    console.log('init cc token')
                     this.props.stripe.createToken({
                         type: 'card', name: 'Jenny Rosen'
                     }).then(token => {
@@ -70,7 +72,9 @@ class CheckoutForm extends React.Component {
                         }
                         if (typeof token.error === 'undefined') {
                             console.log('Received Stripe token:', token)
-                            this.sendToken(token, data)
+                            data.token = token
+                            //send the token to the server using the correct route for this payment method
+                            this.sendToken(data, '/cc')
                         }
                     })
                 } else if (this.props.method === 'ACH') {
@@ -93,7 +97,9 @@ class CheckoutForm extends React.Component {
                         }
                         if (typeof token.error === 'undefined') {
                             console.log('Received Stripe token:', token)
-                            this.sendToken(token, data)
+                            data.token = token
+                            //send the token to the server using the correct route for this payment method
+                            this.sendToken(data, '/ach')
                         }
                     })
                 }
@@ -101,17 +107,16 @@ class CheckoutForm extends React.Component {
         })
     }
 
-    sendToken = (token, data) => {
-        data.token = token
+    sendToken = (data, route) => {
         console.log('the data: ', data)
-        Ajax.post(SetUrl() + this.route, data)
+        Ajax.post(SetUrl() + route, data)
             .then((res) => {
                 this.response(res)
             })
     }
 
     response = (res) => {
-        this.setState({ chargeComplete: 'Payment Complete, Thank You!' })
+        this.setState({ userNotify: res.data.msg })
         console.log(res)
     }
 
@@ -135,6 +140,9 @@ class CheckoutForm extends React.Component {
 
                     {this.props.method === "ACH" ?
                         <>
+                            <Input name="email" label="Email" value={this.state.email} error={this.state.userErrors.email} onChange={this.onChange} />
+                            <Input name="password" label="Password" value={this.state.password} error={this.state.userErrors.password} onChange={this.onChange} /><br />
+                    
                             <Elements>
                                 <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onChange} />
                             </Elements>
@@ -147,6 +155,9 @@ class CheckoutForm extends React.Component {
                             <Elements>
                                 <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onChange} />
                             </Elements>
+                            <p className="text">If you haven't sent us funds via ACH before, we'll need to verify your bank account.
+                        We will send two small deposits to your account with description "AMNTS" which will take 1-2 business days to appear in your account.
+                        When you have those amount, come back and enter them to verify your account and you may then pay using ACH</p>
                         </>
                         : (null)}
 

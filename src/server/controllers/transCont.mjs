@@ -1,10 +1,15 @@
 import express from 'express'
-import CreateCharge from './model/CreateCharge.mjs'
+import CreateCCCharge from './model/CreateCCCharge.mjs'
 const routes = express.Router();
 
-routes.post('/pay', (req, res) => {
-    const Charge = new CreateCharge(req, res)
+routes.post('/cc', (req, res) => {
+    const Charge = new CreateCCCharge(req, res)
     Charge.charge()
+})
+
+routes.post('/ach', (req, res) => {
+    const Charge = new ACH(req, res)
+    Charge.Check()
 })
 
 export default routes
