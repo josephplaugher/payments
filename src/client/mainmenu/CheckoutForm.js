@@ -1,6 +1,7 @@
 import React from 'react'
 import Input from 'Util/Input'
 import Select from 'Util/Select'
+import StripeInput from 'Util/StripeInput'
 import StripeCC from 'Util/StripeCC'
 import Button from 'Util/Button'
 import Validate from 'Util/Validate'
@@ -73,6 +74,7 @@ class CheckoutForm extends React.Component {
                         }
                     })
                 } else if (this.props.method === 'ACH') {
+                    console.log('acctno: ',this.state.acctno, 'routing: ', this.state.routingno)
                     this.props.stripe.createToken('bank_account', {
                         country: 'US',
                         currency: 'usd',
@@ -134,16 +136,16 @@ class CheckoutForm extends React.Component {
                     {this.props.method === "ACH" ?
                         <>
                             <Elements>
-                                <Input label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onChange} />
+                                <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onChange} />
                             </Elements>
                             <Elements>
-                                <Select label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
+                                <Select id="type" label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
                             </Elements>
                             <Elements>
-                                <Input label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onChange} />
+                                <StripeInput id="acctno" label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onChange} />
                             </Elements>
                             <Elements>
-                                <Input label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onChange} />
+                                <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onChange} />
                             </Elements>
                         </>
                         : (null)}
