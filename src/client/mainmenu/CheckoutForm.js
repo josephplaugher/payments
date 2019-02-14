@@ -55,25 +55,24 @@ class CheckoutForm extends React.Component {
             } else {
                 // after the invoice number and amount are validated
                 // create the token
-                if(this.props.method === 'CC') {
+                if (this.props.method === 'CC') {
                     this.props.stripe.createToken({
                         type: 'card', name: 'Jenny Rosen'
+                    }).then(token => {
+                        if (token.error) {
+                            console.log('stripe error: ', token.error)
+                            this.setState({
+                                userErrors: {
+                                    stripeInputError: error.message
+                                }
+                            })
+                        }
+                        if (typeof token.error === 'undefined') {
+                            console.log('Received Stripe token:', token)
+                            this.sendToken(token, data)
+                        }
                     })
-                        .then(token => {
-                            if (token.error) {
-                                console.log('stripe error: ', token.error)
-                                this.setState({
-                                    userErrors: {
-                                        stripeInputError: error.message
-                                    }
-                                })
-                            }
-                            if (typeof token.error === 'undefined') {
-                                console.log('Received Stripe token:', token)
-                                this.sendToken(token, data)
-                            }
-                        })
-                } else if(this.props.method === 'ACH') {
+                } else if (this.props.method === 'ACH') {
                     this.props.stripe.createToken('bank_account', {
                         country: 'US',
                         currency: 'usd',
@@ -81,21 +80,20 @@ class CheckoutForm extends React.Component {
                         account_number: this.state.acctno,
                         account_holder_name: this.state.acctholder,
                         account_holder_type: this.state.type,
+                    }).then(token => {
+                        if (token.error) {
+                            console.log('stripe error: ', token.error)
+                            this.setState({
+                                userErrors: {
+                                    stripeInputError: error.message
+                                }
+                            })
+                        }
+                        if (typeof token.error === 'undefined') {
+                            console.log('Received Stripe token:', token)
+                            this.sendToken(token, data)
+                        }
                     })
-                        .then(token => {
-                            if (token.error) {
-                                console.log('stripe error: ', token.error)
-                                this.setState({
-                                    userErrors: {
-                                        stripeInputError: error.message
-                                    }
-                                })
-                            }
-                            if (typeof token.error === 'undefined') {
-                                console.log('Received Stripe token:', token)
-                                this.sendToken(token, data)
-                            }
-                        })
                 }
             }
         })
@@ -117,7 +115,7 @@ class CheckoutForm extends React.Component {
 
     render() {
 
-        const typeOptions = ['Individual','Business']
+        const typeOptions = ['Individual', 'Business']
 
         return (
 
@@ -138,13 +136,13 @@ class CheckoutForm extends React.Component {
                             <Elements>
                                 <Input label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onChange} />
                             </Elements>
-                            <Elements>  
+                            <Elements>
                                 <Select label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
                             </Elements>
                             <Elements>
                                 <Input label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onChange} />
                             </Elements>
-                            <Elements>  
+                            <Elements>
                                 <Input label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onChange} />
                             </Elements>
                         </>
