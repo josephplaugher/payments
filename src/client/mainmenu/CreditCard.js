@@ -14,7 +14,7 @@ import "css/main.css";
 import "css/logo.css";
 import "css/form.css";
 
-class ACH extends React.Component {
+class CreditCard extends React.Component {
   constructor(props) {
     super(props);
     this.useLiveSearch = false;
@@ -27,8 +27,8 @@ class ACH extends React.Component {
       chargeComplete: ""
     };
     this.onChange = this.onChange.bind(this);
-    this.processACH = this.processACH.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+    this.processCreditCard = this.processCreditCard.bind(this);
     this.sendToken = this.sendToken.bind(this);
     this.response = this.response.bind(this);
   }
@@ -57,12 +57,12 @@ class ACH extends React.Component {
       } else {
         // after the invoice number and amount are validated
         // create the token
-        this.processACH();
+        this.processCreditCard();
       }
     });
   };
 
-  processACH() {
+  processCreditCard() {
     console.log(
       "acctno: ",
       this.state.acctno,
@@ -109,31 +109,15 @@ class ACH extends React.Component {
   };
 
   render() {
-    const typeOptions = ["Individual", "Business"];
-
     return (
       <div id="form-container">
         {/* prettier-ignore */}
         <form onSubmit={this.onSubmit} >
             <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
             <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br />
-            <Input name="email" label="Email" value={this.state.email} error={this.state.userErrors.email} onChange={this.onChange} />
-            <Input name="password" label="Password" value={this.state.password} error={this.state.userErrors.password} onChange={this.onChange} /><br />
             <Elements>
-                <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onChange} />
+                <StripeCC label="Credit Card" error={this.state.userErrors.stripeInputError} />
             </Elements>
-            <Elements>
-                <Select id="type" label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
-            </Elements>
-            <Elements>
-                <StripeInput id="acctno" label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onChange} />
-            </Elements>
-            <Elements>
-                <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onChange} />
-            </Elements>
-            <p className="text">If you haven't sent us funds via ACH before, we'll need to verify your bank account.
-                We will send two small deposits to your account with description "AMNTS" which will take 1-2 business days to appear in your account.
-                When you have those amount, come back and enter them to verify your account and you may then pay using ACH</p>
             <div className="button-div">
                 <Button value="Pay Now" id="submit" />
             </div>
@@ -146,4 +130,4 @@ class ACH extends React.Component {
   }
 }
 
-export default injectStripe(ACH);
+export default injectStripe(CreditCard);
