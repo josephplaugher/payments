@@ -18,7 +18,7 @@ class CreditCard extends React.Component {
   constructor(props) {
     super(props);
     this.useLiveSearch = false;
-    this.route = "/pay";
+    this.route = "/cc";
     this.valRules = ValRules;
     this.state = {
       userErrors: {},
@@ -63,37 +63,21 @@ class CreditCard extends React.Component {
   };
 
   processCreditCard() {
-    console.log(
-      "acctno: ",
-      this.state.acctno,
-      "routing: ",
-      this.state.routingno
-    );
-    this.props.stripe
-      .createToken("bank_account", {
-        country: "US",
-        currency: "usd",
-        routing_number: this.state.routingno,
-        account_number: this.state.acctno,
-        account_holder_name: this.state.acctholder,
-        account_holder_type: this.state.type
-      })
-      .then(token => {
-        if (token.error) {
-          console.log("stripe error: ", token.error);
-          this.setState({
-            userErrors: {
-              stripeInputError: error.message
-            }
-          });
-        }
-        if (typeof token.error === "undefined") {
-          console.log("Received Stripe token:", token);
-          data.token = token;
-          //send the token to the server using the correct route for this payment method
-          this.sendToken(data, "/ach");
-        }
-      });
+    console.log("invoice: ", this.state.invoice, "amount: ", this.state.amount);
+    let getToken = this.props.stripe.createToken({ name: "Name" });
+    getToken.then(res => {
+      if (res.error) {
+        console.log("error getting token: ", res.error);
+      } else {
+        let data = {
+          token: res.token.id,
+          invoice: this.state.invoice,
+          amount: this.state.amount
+        };
+        //send the token to the server
+        this.sendToken(data, this.route);
+      }
+    });
   }
 
   sendToken = (data, route) => {
@@ -115,9 +99,9 @@ class CreditCard extends React.Component {
         <form onSubmit={this.onSubmit} >
             <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
             <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br />
-            <Elements>
+            
                 <StripeCC label="Credit Card" error={this.state.userErrors.stripeInputError} />
-            </Elements>
+           
             <div className="button-div">
                 <Button value="Pay Now" id="submit" />
             </div>
