@@ -24,7 +24,8 @@ class CreditCard extends React.Component {
       userErrors: {},
       invoice: "test",
       amount: "500",
-      chargeComplete: ""
+      chargeComplete: "",
+      invoiceData: {}
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
@@ -56,24 +57,29 @@ class CreditCard extends React.Component {
         });
       } else {
         // after the invoice number and amount are validated
+        // place them into invoiceData and
         // create the token
+        this.setState({ invoiceData: data });
         this.processCreditCard();
       }
     });
   };
 
   processCreditCard() {
-    console.log("invoice: ", this.state.invoice, "amount: ", this.state.amount);
     let getToken = this.props.stripe.createToken({ name: "Name" });
     getToken.then(res => {
-      if (res.error) {
+      if (typeof token.error !== "undefined") {
         console.log("error getting token: ", res.error);
+        this.setState({
+          userErrors: {
+            stripeInputError: res.error
+          }
+        });
       } else {
-        let data = {
-          token: res.token.id,
-          invoice: this.state.invoice,
-          amount: this.state.amount
-        };
+        let data = Object.assign(
+          { token: res.token.id },
+          this.state.invoiceData
+        );
         //send the token to the server
         this.sendToken(data, this.route);
       }
@@ -81,7 +87,6 @@ class CreditCard extends React.Component {
   }
 
   sendToken = (data, route) => {
-    console.log("the data: ", data);
     Ajax.post(SetUrl() + route, data).then(res => {
       this.response(res);
     });
