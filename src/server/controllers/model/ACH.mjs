@@ -13,7 +13,7 @@ class ACH {
 
   verifyAccount() {
     var self = this //bind this context to self var within the callback below
-    stripe.customers.create({
+    this.stripe.customers.create({
         source: this.req.body.token.token.id,
         description: "Example customer"
     }, function(error, customer) {

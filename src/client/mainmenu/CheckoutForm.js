@@ -59,8 +59,7 @@ class CheckoutForm extends React.Component {
                 if (this.props.method === 'CC') {
                     /**the credit card token function isn't working. not sure why */
                     console.log('init cc token')
-                    this.props.stripe.createToken({
-                        type: 'card', name: 'Jenny Rosen'
+                    this.props.stripe.createToken({name: 'Jenny Rosen'
                     }).then(token => {
                         if (token.error) {
                             console.log('stripe error: ', token.error)
