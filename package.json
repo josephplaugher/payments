@@ -24,6 +24,7 @@
     "forever": "^0.15.3",
     "install": "^0.12.2",
     "jsonwebtoken": "^8.4.0",
+    "lightbox-appco": "^1.0.3",
     "moment": "^2.23.0",
     "pg": "^7.7.1",
     "react": "^16.7.0",
