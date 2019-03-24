@@ -35,7 +35,7 @@ class ACH {
       (error, customers) => {
         if (error) {
           console.log("find customer error: ", error);
-          self.response({ error: error });
+          self.response({ errorFindingcustomer: error });
         } else {
           console.log("customer: ", customers);
           return customers;
@@ -46,6 +46,10 @@ class ACH {
 
   createCustomer() {
     var self = this; //bind this context to self var within the callback below
+    console.log(
+      "creating customer with this source token: ",
+      this.req.body.token
+    );
     this.stripe.customers.create(
       {
         source: this.req.body.token,
@@ -54,11 +58,14 @@ class ACH {
       },
       (error, customer) => {
         if (error) {
-          console.log("charge error: ", error);
-          self.response({ error: error });
+          console.log("create customer error: ", error);
+          self.response({ createCustomerError: error });
         } else {
-          console.log("customer: ", customer);
-          self.response({ customer: customer, userNotify: "message" });
+          console.log("new customer: ", customer);
+          self.customer = customer;
+          this.bankStatus = "new";
+          // this will always result in a request to verify the bank because its a new customer
+          this.decision();
         }
       }
     );
@@ -108,9 +115,7 @@ class ACH {
         customer: this.customer.id,
         amount: body.amount,
         currency: "usd",
-        source: body.token, // obtained with Stripe.js
-        description: body.memo,
-        invoice: body.invoice
+        description: this.pmtDescription()
       },
       (error, charge) => {
         if (error) {
@@ -127,7 +132,7 @@ class ACH {
   pmtDescription() {
     let memo = this.req.body.memo;
     let inv = this.req.body.invoice;
-    let msg = `Payment for invoice#: ${invoice}. Memo: ${memo}`;
+    let msg = `Payment for invoice#: ${inv}. Memo: ${memo}`;
     return msg;
   }
 }

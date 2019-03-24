@@ -6,7 +6,7 @@ import StripeCC from "Util/StripeCC";
 import Button from "Util/Button";
 import Validate from "Util/Validate";
 import ValRules from "Util/ValRules";
-import LightBox from "lightbox-appco";
+import VerifyAmounts from "./VerifyAmounts";
 import Ajax from "Util/Ajax";
 import SetUrl from "Util/SetUrl";
 import { Elements, injectStripe } from "react-stripe-elements";
@@ -38,6 +38,7 @@ class ACH extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.sendToken = this.sendToken.bind(this);
     this.response = this.response.bind(this);
+    this.close = this.close.bind(this);
   }
 
   onChange = event => {
@@ -118,12 +119,10 @@ class ACH extends React.Component {
   };
 
   response = res => {
-    console.log(res);
     if (res.error) {
       // something
     }
-    let result = res.customer.data[0];
-    switch (result.BankStatus) {
+    switch (res.data.resp.bankStatus) {
       case "verified":
         this.setState({ userNotify: { success: "Bank Charge Initiated" } });
         break;
@@ -139,8 +138,17 @@ class ACH extends React.Component {
     }
   };
 
+  close() {
+    this.setState({ showVerifyPrompt: false });
+  }
+
   render() {
     const typeOptions = ["Individual", "Business"];
+    const needsValidatedMessage = `If you haven't sent us funds via ACH before, we'll need to verify your
+    bank account. We will send two small deposits to your account with
+    description "AMNTS" which will take 1-2 business days to appear in
+    your account. When you have those amount, come back and enter them to
+    verify your account and you may then pay using ACH`;
 
     return (
       <div id="form-container">
@@ -170,45 +178,16 @@ class ACH extends React.Component {
         </form>
         </div>
         {this.state.showVerifyPrompt ? (
-          <LightBox
-            close={this.props.close}
-            style={{
-              backgroundColor: "white",
-              borderColor: "#2665c4",
-              borderRadius: "5px",
-              borderStyle: "solid",
-              borderColor: "#2665c4",
-              height: "auto",
-              width: "250px",
-              left: "5"
-            }}
-          >
-            <div id="verify-bank">
-              <p className="text">
-                Enter the amount of the two deposits to verify your bank account
-              </p>
-              {/* prettier-ignore */}
-              <form onSubmit={this.onSubmit} >
-            <Input name="amount1" label="Amount 1" value={this.state.amount1} error={this.state.userErrors.amount1} onChange={this.onChange} />
-            <Input name="amount2" label="Amount 2" value={this.state.amount2} error={this.state.userErrors.amount2} onChange={this.onChange} /><br />
-            <div className="button-div">
-                <Button value="Verify Bank" id="submit" />
-            </div>
-        </form>
-            </div>
-          </LightBox>
+          <VerifyAmounts
+            needsValidatedMessage={needsValidatedMessage}
+            close={this.close}
+          />
         ) : null}
         <div id="user-notify">
           <p className="success-msg">{this.state.userNotify.success}</p>
           <p className="error-msg">{this.state.userNotify.msg}</p>
         </div>
-        <p className="text">
-          If you haven't sent us funds via ACH before, we'll need to verify your
-          bank account. We will send two small deposits to your account with
-          description "AMNTS" which will take 1-2 business days to appear in
-          your account. When you have those amount, come back and enter them to
-          verify your account and you may then pay using ACH
-        </p>
+        <p className="text">{needsValidatedMessage}</p>
       </div>
     );
   }
