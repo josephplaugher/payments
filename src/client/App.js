@@ -1,4 +1,5 @@
 import React from "react";
+import { FormClass, Input, Button } from "reactform-appco";
 import SetUrl from "Util/SetUrl";
 import ValRules from "Util/ValRules";
 import EB from "Util/EB";
@@ -7,54 +8,51 @@ import Home from "./mainmenu/Home";
 import { StripeProvider } from "react-stripe-elements";
 
 import "css/main.css";
+import "css/form.css";
 import "css/userNotify.css";
 
-class AppreciateCo extends React.Component {
+class AppreciateCo extends FormClass {
   constructor(props) {
     super(props);
+    this.useLiveSearch = false;
+    this.route = "/login";
+    this.valRules = ValRules;
     this.stripeKey = "";
     this.state = {
       error: null,
-      isLoggedIn: true,
-      userData: {}
+      isLoggedIn: false,
+      userData: {},
+      email: "",
+      password: ""
     };
     this.setLoginState = this.setLoginState.bind(this);
     this.response = this.response.bind(this);
-    //this.setLoginState();
+    this.setLoginState();
     this.setStripeKey = this.setStripeKey.bind(this);
     this.setStripeKey();
   }
 
   setLoginState = () => {
-    const AppCoToken = sessionStorage.getItem("AppCoToken");
-    //console.log('appco token', AppCoToken)
-    if (AppCoToken !== null) {
-      let auth = checkLoginState();
-      auth.then(headers => {
-        //console.log('headers, ', headers)
-        if (typeof headers.token !== undefined) {
-          let userData = JSON.parse(sessionStorage.getItem("AppCoUser"));
-          sessionStorage.setItem("AppCoToken", headers.token);
-          this.setState({
-            isLoggedIn: true,
-            userData: userData
-          });
-        } else {
-          sessionStorage.removeItem("AppCoUser");
-          sessionStorage.removeItem("AppCoToken");
-          this.setState({
-            isLoggedIn: false,
-            userData: {}
-          });
-        }
-      });
-    }
+    let auth = checkLoginState();
+    auth.then(res => {
+      if (res.isLoggedIn === true) {
+        this.setState({
+          isLoggedIn: res.isLoggedIn,
+          userData: res.userData
+        });
+      } else {
+        this.setState({
+          isLoggedIn: false,
+          userData: {}
+        });
+      }
+    });
   };
 
   response = res => {
     if (typeof res.userData !== "undefined") {
-      sessionStorage.setItem("AppCoUser", JSON.stringify(res.userData));
-      sessionStorage.setItem("AppCoToken", res.token);
+      sessionStorage.setItem("AppCoPmtsUser", JSON.stringify(res.userData));
+      sessionStorage.setItem("AppCoPmtsToken", res.token);
       this.setState({
         token: res.token,
         userNotify: res.userNotify,
@@ -90,17 +88,15 @@ class AppreciateCo extends React.Component {
             </EB>
           ) : (
             <div id="sign-in">
+              <p className="formTitle">Sign In</p>
               {/* prettier-ignore */}
-              <Form formTitle="Sign In" 
-                  action={`${SetUrl()}/login`}
-                  valrules={ValRules} response={this.response} >
-                  <Input name="email" label="Email" className="textinput" labelClass="label" errorClass="input-error"/>
-                  <Input name="password" label="Password" className="textinput" labelClass="label" errorClass="input-error"/>
-                  <div className="buttondiv">
-                    <Button id="submit" value="Sign In" />
+              <form onSubmit={this.rfa_onSubmit} >
+                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} className="rfa_textinput" labelClass="rfa_label" errorClass="rfa_input-error"/>
+                  <Input name="password" label="Password" value={this.state.password} onChange={this.rfa_onChange} className="rfa_textinput" labelClass="rfa_label" errorClass="rfa_input-error"/>
+                  <div className="rfa_button-div">
+                    <Button id="submit" value="Sign In" className="rfa_submit" />
                   </div>
-
-                </Form>
+              </form>
             </div>
           )}
         </div>

@@ -1,32 +1,39 @@
+#sign-in {
+  margin: auto;
+  padding: 0;
+  width: 350px;
+  min-width: 350px;
+}
+
 #home-container {
-    display: grid;
-    grid-template-columns: 30% auto 30%;
-    grid-template-rows: 20% auto 5%;
-    padding: 10px;
+  display: grid;
+  grid-template-columns: 30% auto 30%;
+  grid-template-rows: 20% auto 5%;
+  padding: 10px;
 }
 
 #nav-pane {
-    grid-column-start: 2;
-    grid-column-end: 3;
-    grid-row-start: 3;
-    grid-row-end: row3-end;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  grid-row-start: 3;
+  grid-row-end: row3-end;
 }
 
 .nav {
-    border: .5px solid #2665C4;
-    border-radius: 5px;
-    color: #2665C4;
-    font-size: 18px;
-    text-align: center;
-    display: block;
-    padding: 10px;
-    text-decoration: none;
+  border: 0.5px solid #2665c4;
+  border-radius: 5px;
+  color: #2665c4;
+  font-size: 18px;
+  text-align: center;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
 }
 
 #form-container {
-    margin-top: 50px;
+  margin-top: 50px;
 }
 
-.userNotify{
-    color: red;
+.userNotify {
+  color: red;
 }

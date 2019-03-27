@@ -1,4 +1,4 @@
-const { Pool } = require("pg");
+import { Pool } from "pg";
 
 var db_host;
 if (process.env.NODE_ENV === "production") {
@@ -29,4 +29,4 @@ loginConn.connect().catch(error => {
   console.log("db conn error: ", error);
 });
 
-module.exports = { loginConn };
+export default { loginConn };
