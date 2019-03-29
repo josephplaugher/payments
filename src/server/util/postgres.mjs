@@ -1,4 +1,5 @@
-import { Pool } from "pg";
+import pg from "pg";
+const { Pool } = pg;
 
 var db_host;
 if (process.env.NODE_ENV === "production") {
@@ -6,17 +7,6 @@ if (process.env.NODE_ENV === "production") {
 } else {
   db_host = process.env.DB_HOST_DEV;
 }
-// unused in this app. everyone connects to the same database
-// const userConn = dbNumber => {
-//   let connect = new Pool({
-//     user: process.env.DB_USERNAME,
-//     host: db_host,
-//     database: process.env.DB_NAME,
-//     password: process.env.DB_PASSWORD,
-//     port: process.env.DB_PORT
-//   });
-//   return connect;
-// };
 
 const loginConn = new Pool({
   user: process.env.DB_USERNAME,
@@ -25,6 +15,7 @@ const loginConn = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT
 });
+console.log("the pool", loginConn);
 loginConn.connect().catch(error => {
   console.log("db conn error: ", error);
 });

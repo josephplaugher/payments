@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import loginConn from "../../../util/postgres.1.mjs";
+//import loginConn from "../../../util/postgres.mjs";
 import UserBase from "./UserBase.mjs";
 
 class NewUser extends UserBase {

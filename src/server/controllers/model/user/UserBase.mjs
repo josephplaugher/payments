@@ -1,4 +1,4 @@
-import loginConn from "../../../util/postgres.1.mjs";
+//import loginConn from "../../../util/postgres.mjs";
 
 class UserBase {
   constructor(req, res) {
@@ -6,23 +6,24 @@ class UserBase {
     this.res = res;
   }
 
-  getUserData() {
-    return new Promise((resolve, reject) => {
-      const query = {
-        text: `SELECT 
-                email, id, stripe_id, lname, fname, organization 
-            FROM users 
-            WHERE email = $1 `,
-        values: [this.req.body.email.toLowerCase()]
-      };
-      loginConn
-        .query(query)
-        .then(data => {
-          resolve(data);
-        })
-        .catch(e => reject(e.stack));
-    });
-  }
+  // getUserData() {
+  //   console.log("login con in userbase", loginConn);
+  //   return new Promise((resolve, reject) => {
+  //     const query = {
+  //       text: `SELECT
+  //               email, id, stripe_id, lname, fname, organization
+  //           FROM users
+  //           WHERE email = $1 `,
+  //       values: [this.req.body.email.toLowerCase()]
+  //     };
+  //     loginConn
+  //       .query(query)
+  //       .then(data => {
+  //         resolve(data);
+  //       })
+  //       .catch(e => reject(e.stack));
+  //   });
+  // }
 
   // setCookieAndToken(req, res, next) {
   //   var token = sign({ userData: userData }, process.env.JWT_SECRET, {

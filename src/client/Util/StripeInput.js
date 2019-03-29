@@ -1,24 +1,23 @@
-import React from 'react';
-  
+import React from "react";
+
 class StripeInput extends React.Component {
-
   render() {
-
-      return (
-        <div className="input-container">
-        <p className="label">{this.props.label} </p>
-        <p className='input-error'>{this.props.error} </p>
-        <input className="textinput" 
+    return (
+      <div className="rfa_input-container">
+        <p className="rfa_label">{this.props.label} </p>
+        <p className="rfa_input-error">{this.props.error} </p>
+        <input
+          className="rfa_textinput"
           type="text"
-          id={this.props.id} 
+          id={this.props.id}
           value={this.props.value}
           onChange={this.props.onChange}
           autoComplete="off"
-          className="textinput"
+          className="rfa_textinput"
         />
-        </div>
-      );
-    }
-  }  
+      </div>
+    );
+  }
+}
 
 export default StripeInput;

@@ -20,7 +20,7 @@ class AppreciateCo extends FormClass {
     this.stripeKey = "";
     this.state = {
       error: null,
-      isLoggedIn: false,
+      isLoggedIn: true,
       userData: {},
       email: "",
       password: ""

@@ -1,9 +1,7 @@
 import React from "react";
-import Input from "Util/Input";
+import { Input, Button } from "reactform-appco";
 import Select from "Util/Select";
 import StripeInput from "Util/StripeInput";
-import StripeCC from "Util/StripeCC";
-import Button from "Util/Button";
 import Validate from "Util/Validate";
 import ValRules from "Util/ValRules";
 import VerifyAmounts from "./VerifyAmounts";
