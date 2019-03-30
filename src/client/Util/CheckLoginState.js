@@ -3,16 +3,16 @@ import SetUrl from "./SetUrl";
 
 const checkLoginState = () => {
   return new Promise((resolve, reject) => {
-    const AppCoToken = sessionStorage.getItem("AppCoToken");
-    //console.log('appco token', AppCoToken)
+    const AppCoToken = sessionStorage.getItem("AppCoPmtsToken");
+    // console.log("appco token", AppCoToken);
     if (AppCoToken !== null) {
       Ajax.get(SetUrl() + "/checkLoginState")
         .catch(e => {
           reject("error checking login state: ", e);
         })
         .then(headers => {
-          //console.log('headers, ', headers.token)
-          //console.log('authorized: ', headers.authorized)
+          // console.log("headers, ", headers.token);
+          // console.log("authorized: ", headers.authorized);
           if (
             typeof headers.token !== "null" &&
             headers.authorized !== "false"

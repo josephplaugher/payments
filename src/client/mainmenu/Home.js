@@ -1,5 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import User from "./User";
 import CreditCard from "./CreditCard";
 import ACH from "./ACH";
 import { Elements } from "react-stripe-elements";
@@ -8,6 +9,7 @@ class Home extends React.Component {
   render() {
     return (
       <div id="home-container">
+        <User userData={this.props.userData} signOut={this.props.signOut} />
         <Router>
           {/* prettier-ignore */}
           <div id="nav-pane">        

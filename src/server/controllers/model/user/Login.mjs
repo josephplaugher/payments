@@ -10,14 +10,23 @@ class Login extends UserBase {
   }
 
   async start() {
-    let userData = await this.getUserData();
+    // get the user info along with their list of sources.
+    // we've store the users name and password in the "desription"
+    // field on the Stripe customer object. We add the email
+    // since that is stored separately and used for searching.
+    // finally, we add their list of payment sources for use
+    // on the client side.
+    let users = await this.getCustomersByEmail();
+    let userData = JSON.parse(users.data[0].description);
+    userData["email"] = users.data[0].email;
+    userData["sources"] = users.data[0].sources;
     this.checkPassword(this.req, this.res, userData);
   }
 
-  checkPassword(req, res, data) {
-    if (data.rows[0]) {
+  checkPassword(req, res, userData) {
+    if (userData) {
       //if the email resulted in a user entry, compare password hashes
-      var dbhash = data.rows[0].password;
+      var dbhash = userData.password;
       //if the password was hashed in PHP it will contain a '$2y$' hash.
       //if hashed in Node, it will contain a '$2a$a' hash.
       //if the former, we replace it before verifying.
@@ -33,11 +42,7 @@ class Login extends UserBase {
             userNotify: { error: "That email or password is invalid" }
           });
         } else if (result == true) {
-          delete data.rows[0].password; //ensure the pw hash isn't sent along to the client
-          let userData = {};
-          for (prop in data.rows[0]) {
-            userData[prop] = data.rows[0][prop];
-          }
+          delete userData.password; //ensure the pw hash isn't sent along to the client
           var token = jwt.sign({ userData: userData }, process.env.JWT_SECRET, {
             expiresIn: "1h"
           });

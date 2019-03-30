@@ -1,9 +1,28 @@
 //import loginConn from "../../../util/postgres.mjs";
+import SetStripeKey from "./../SetStripeKey";
 
 class UserBase {
   constructor(req, res) {
+    this.stripe = SetStripeKey();
     this.req = req;
     this.res = res;
+  }
+
+  getCustomersByEmail() {
+    let customer = new Promise((resolve, reject) => {
+      var self = this;
+      this.stripe.customers.list(
+        { email: this.req.body.email },
+        (error, customers) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(customers);
+          }
+        }
+      );
+    });
+    return customer;
   }
 
   // getUserData() {

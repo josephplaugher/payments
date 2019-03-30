@@ -20,7 +20,7 @@ class AppreciateCo extends FormClass {
     this.stripeKey = "";
     this.state = {
       error: null,
-      isLoggedIn: true,
+      isLoggedIn: false,
       userData: {},
       email: "",
       password: ""
@@ -30,6 +30,7 @@ class AppreciateCo extends FormClass {
     this.setLoginState();
     this.setStripeKey = this.setStripeKey.bind(this);
     this.setStripeKey();
+    this.setLoginState();
   }
 
   setLoginState = () => {
@@ -50,13 +51,16 @@ class AppreciateCo extends FormClass {
   };
 
   response = res => {
-    if (typeof res.userData !== "undefined") {
-      sessionStorage.setItem("AppCoPmtsUser", JSON.stringify(res.userData));
-      sessionStorage.setItem("AppCoPmtsToken", res.token);
+    if (typeof res.data.userData !== "undefined") {
+      sessionStorage.setItem(
+        "AppCoPmtsUser",
+        JSON.stringify(res.data.userData)
+      );
+      sessionStorage.setItem("AppCoPmtsToken", res.data.token);
       this.setState({
-        token: res.token,
-        userNotify: res.userNotify,
-        userData: res.userData,
+        token: res.data.token,
+        userNotify: res.data.userNotify,
+        userData: res.data.userData,
         isLoggedIn: true
       });
     }
@@ -83,7 +87,7 @@ class AppreciateCo extends FormClass {
           {this.state.isLoggedIn ? (
             <EB comp="Home">
               <StripeProvider apiKey={this.stripeKey}>
-                <Home />
+                <Home userData={this.state.userData} />
               </StripeProvider>
             </EB>
           ) : (
@@ -91,10 +95,10 @@ class AppreciateCo extends FormClass {
               <p className="formTitle">Sign In</p>
               {/* prettier-ignore */}
               <form onSubmit={this.rfa_onSubmit} >
-                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} className="rfa_textinput" labelClass="rfa_label" errorClass="rfa_input-error"/>
-                  <Input name="password" label="Password" value={this.state.password} onChange={this.rfa_onChange} className="rfa_textinput" labelClass="rfa_label" errorClass="rfa_input-error"/>
+                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} />
+                  <Input name="password" label="Password" value={this.state.password} onChange={this.rfa_onChange} />
                   <div className="rfa_button-div">
-                    <Button id="submit" value="Sign In" className="rfa_submit" />
+                    <Button id="submit" value="Sign In" />
                   </div>
               </form>
             </div>
