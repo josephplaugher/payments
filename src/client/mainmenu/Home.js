@@ -2,10 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import User from "./User";
 import CreditCard from "./CreditCard";
-import ACH from "./ACH";
+import ACHHome from "./ACHHome";
 import { Elements } from "react-stripe-elements";
 
 class Home extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   render() {
     return (
       <div id="home-container">
@@ -13,13 +16,13 @@ class Home extends React.Component {
         <Router>
           {/* prettier-ignore */}
           <div id="nav-pane">        
-          <Link to="/cc" className="nav">Credit Card</Link>
+          <Link to="/cc" className="nav">Manage Credit Cards</Link>
             <Route path="/cc" 
               render={(props) => <Elements><CreditCard {...props} method="CC"/></Elements>}
               />
-          <br/><Link to="/ach" className="nav">ACH</Link>
+          <br/><Link to="/ach" className="nav">Manage ACH</Link>
             <Route path="/ach" 
-              render={(props) => <Elements><ACH {...props} method="ACH"/></Elements>}
+              render={(props) => <Elements><ACHHome userData={this.props.userData} method="ACH"/></Elements>}
               />
         </div>
         </Router>

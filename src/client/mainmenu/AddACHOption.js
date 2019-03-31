@@ -13,7 +13,7 @@ import "css/main.css";
 import "css/logo.css";
 import "css/form.css";
 
-class ACH extends React.Component {
+class AddACHOption extends React.Component {
   constructor(props) {
     super(props);
     this.valRules = ValRules;
@@ -142,7 +142,7 @@ class ACH extends React.Component {
 
   render() {
     const typeOptions = ["Individual", "Business"];
-    const needsValidatedMessage = `If you haven't sent us funds via ACH before, we'll need to verify your
+    const needsValidatedMessage = `We'll need to verify your
     bank account. We will send two small deposits to your account with
     description "AMNTS" which will take 1-2 business days to appear in
     your account. When you have those amount, come back and enter them to
@@ -153,10 +153,6 @@ class ACH extends React.Component {
         {/* prettier-ignore */}
         <div id="add-new-bank">
         <form onSubmit={this.onSubmit} >
-            <Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userErrors.invoice} onChange={this.onChange} />
-            <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userErrors.amount} onChange={this.onChange} /><br />
-            <Input name="email" label="Email" value={this.state.email} error={this.state.userErrors.email} onChange={this.onChange} />
-            <Input name="password" label="Password" value={this.state.password} error={this.state.userErrors.password} onChange={this.onChange} /><br />
             <Elements>
                 <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onStripeChange} />
             </Elements>
@@ -191,4 +187,4 @@ class ACH extends React.Component {
   }
 }
 
-export default injectStripe(ACH);
+export default injectStripe(AddACHOption);
