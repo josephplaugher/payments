@@ -1,9 +1,10 @@
-import SetStripeKey from "./SetStripeKey";
+import SetStripeKey from "./../../model/SetStripeKey.mjs";
 
 class ACH {
   constructor(req, res) {
     this.req = req;
     this.res = res;
+    s;
     this.stripe = SetStripeKey();
     this.customer = {};
     this.bankStatus = "";

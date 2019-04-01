@@ -26,14 +26,13 @@ class ACHHome extends React.Component {
   componentDidMount() {
     const bankList = this.props.userData.sources.data;
     const banks = bankList.map(item => (
-      <div className="ach-option">
+      <div className="ach-option" key={item.last4}>
         <p className="text">{`Bank Name: ${item.bank_name} `}</p>
         <p className="text">{`Account Holder Type: ${
           item.account_holder_type
         } `}</p>
         <p className="text">{`Account Number (last 4): ${item.last4} `}</p>
         <p className="text">{`Routing Number: ${item.routing_number} `}</p>
-        <Button className="rfa_submit" onClick={this.edit} value="Edit" />
         <Button className="rfa_submit" onClick={this.delete} value="Delete" />
       </div>
     ));
@@ -74,7 +73,7 @@ class ACHHome extends React.Component {
               }}
             >
               <Elements>
-                <AddACHOption />
+                <AddACHOption userData={this.props.userData} />
               </Elements>
             </LightBox>
           </>

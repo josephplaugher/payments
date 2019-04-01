@@ -56,7 +56,7 @@ class AppreciateCo extends FormClass {
         "AppCoPmtsUser",
         JSON.stringify(res.data.userData)
       );
-      sessionStorage.setItem("AppCoPmtsToken", res.data.token);
+      sessionStorage.setItem(process.env.TOKEN_NAME, res.data.token);
       this.setState({
         token: res.data.token,
         userNotify: res.data.userNotify,

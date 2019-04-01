@@ -3,6 +3,7 @@ import express from "express";
 import bodyParser from "body-parser";
 const app = express();
 import cookieParser from "cookie-parser";
+import SetUrl from "./util/SetUrl";
 import Auth from "./util/Auth";
 import userCont from "./controllers/userCont.mjs";
 import achCont from "./controllers/achCont";
@@ -20,7 +21,7 @@ app.listen(port, function() {
 });
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", process.env.BASE_URL);
+  res.header("Access-Control-Allow-Origin", SetUrl());
   res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE,OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type, authorization");
   res.set("X-Powered-By", "Appreciate Corporation");
@@ -37,7 +38,7 @@ app.get("/checkLoginState", Auth, (req, res) => {
 
 app.use("/", userCont);
 app.use("/", Auth, achCont);
-app.use("/", ccCont);
+app.use("/", Auth, ccCont);
 
 //this route renders the UI. The UI will check for the cookie and token
 //and log the user out if they don't exist.

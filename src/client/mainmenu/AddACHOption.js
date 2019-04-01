@@ -28,11 +28,12 @@ class AddACHOption extends React.Component {
       acctno: "000123456789",
       routingno: "110000000",
       amount: "500",
+      submitData: {},
       showVerifyPrompt: false
     };
     this.onChange = this.onChange.bind(this);
     this.onStripeChange = this.onStripeChange.bind(this);
-    this.processACH = this.processACH.bind(this);
+    this.addACH = this.addACH.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.sendToken = this.sendToken.bind(this);
     this.response = this.response.bind(this);
@@ -56,12 +57,7 @@ class AddACHOption extends React.Component {
   onSubmit = event => {
     event.preventDefault();
     const data = {
-      invoice: this.state.invoice,
-      amount: this.state.amount,
-      email: this.state.email,
-      acctholder: this.state.acctholder,
-      email: this.state.email,
-      memo: this.state.memo
+      id: this.props.userData.id
     };
     let val = new Validate(data, this.valRules);
     let prom = val.isError();
@@ -74,13 +70,13 @@ class AddACHOption extends React.Component {
       } else {
         // after the invoice number and amount are validated
         // create the token
-        this.setState({ invoiceData: data });
-        this.processACH();
+        this.setState({ submitData: data });
+        this.addACH();
       }
     });
   };
 
-  processACH() {
+  addACH() {
     let getToken = this.props.stripe.createToken("bank_account", {
       country: "US",
       currency: "usd",
@@ -101,10 +97,10 @@ class AddACHOption extends React.Component {
         console.log("Received Stripe token:", res.token);
         let data = Object.assign(
           { token: res.token.id },
-          this.state.invoiceData
+          this.state.submitData
         );
         //send the token to the server using the correct route for this payment method
-        this.sendToken(data, "/ach");
+        this.sendToken(data, "/addACH");
       }
     });
   }
@@ -165,7 +161,6 @@ class AddACHOption extends React.Component {
             <Elements>
                 <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onStripeChange} />
             </Elements>
-            <Input name="memo" label="Memo" value={this.state.memo} error={this.state.userErrors.memo} onChange={this.onChange} />
             <div className="button-div">
                 <Button value="Add Bank" id="submit" />
             </div>

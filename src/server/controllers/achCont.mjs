@@ -1,11 +1,14 @@
 import express from "express";
-import ACH from "./model/ACH.mjs";
+//import ACH from "./model/ach/ACH.mjs";
+import AddACH from "./model/ach/AddACH.mjs";
 
 const routes = express.Router();
 
-routes.post("/ach", (req, res) => {
-  const Charge = new ACH(req, res);
-  Charge.checkIfCustomerExists();
-});
+// routes.post("/addACH", (req, res) => {
+//   const New = new ACH(req, res)();
+//   //New.checkIfCustomerExists();
+// });
+
+routes.post("/addACH", AddACH);
 
 export default routes;

@@ -1,5 +1,5 @@
 import express from "express";
-import CreateCCCharge from "./model/CreateCCCharge.mjs";
+import CreateCCCharge from "./model/creditcards/CreateCCCharge.mjs";
 
 const routes = express.Router();
 
