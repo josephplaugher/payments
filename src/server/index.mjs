@@ -4,7 +4,7 @@ import bodyParser from "body-parser";
 const app = express();
 import cookieParser from "cookie-parser";
 import SetUrl from "./util/SetUrl";
-import Auth from "./util/Auth";
+import Auth from "./util/Auth.mjs";
 import userCont from "./controllers/userCont.mjs";
 import achCont from "./controllers/achCont";
 import ccCont from "./controllers/ccCont";
@@ -32,13 +32,18 @@ app.use(bodyParser.urlencoded({ extended: false })); // Parse application/x-www-
 app.use(cookieParser());
 app.use(bodyParser.json()); // Parse application/json
 
-app.get("/checkLoginState", Auth, (req, res) => {
+const checkAuth = (req, res, next) => {
+  let auth = new Auth(req, res, next);
+  return auth;
+};
+
+app.get("/checkLoginState", checkAuth, (req, res) => {
   res.status(200).json({ checkLoginState: "done" });
 });
 
 app.use("/", userCont);
-app.use("/", Auth, achCont);
-app.use("/", Auth, ccCont);
+app.use("/", checkAuth, achCont);
+app.use("/", checkAuth, ccCont);
 
 //this route renders the UI. The UI will check for the cookie and token
 //and log the user out if they don't exist.

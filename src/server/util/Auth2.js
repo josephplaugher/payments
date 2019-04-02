@@ -5,26 +5,30 @@ const Auth = (req, res, next) => {
   const authorized = "authorized";
   const cookieName = process.env.COOKIE_NAME;
   if (req.cookies[cookieName] && req.headers.csrf) {
-    // console.log(
-    //   "token and cookie: ",
-    //   req.cookies[cookieName],
-    //   req.headers.csrf
-    // );
+    console.log("cookie and token exist");
+    console.log(
+      "cookie: ",
+      req.cookies[cookieName].token,
+      "and token: ",
+      req.headers.csrf
+    );
     //check if cookie and token exist
     const cookie = req.cookies[cookieName];
     const csrf = req.headers.csrf;
     //if cookie and token exist and the token is valid, check that they are the same
     if (cookie.token === csrf) {
+      console.log("cookie and token are equal");
       var verifiedToken;
       try {
         verifiedToken = jwt.verify(csrf, process.env.JWT_SECRET);
       } catch (error) {
+        console.log("error verifying token: ", error);
         res.header(authorized, false);
         res.header("token", null);
         res.clearCookie(cookieName);
         next();
       }
-      console.log("verified token: ", verifiedToken);
+      //console.log("verified token: ", verifiedToken);
       //upon authentication, renew the token and the cookie
       req.headers["stripeConn"] = verifiedToken.userData.id;
       delete verifiedToken.exp;
@@ -47,11 +51,13 @@ const Auth = (req, res, next) => {
       res.header("token", token);
       next();
     } else {
+      console.log("cookie and token are not equal");
       res.header(authorized, false);
       res.header("token", null);
       next();
     }
   } else {
+    console.log("cookie or token does not exist");
     res.header(authorized, false);
     res.header("token", null);
     next();

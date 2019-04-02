@@ -58,7 +58,7 @@ class AppreciateCo extends FormClass {
       );
       sessionStorage.setItem(process.env.TOKEN_NAME, res.data.token);
       this.setState({
-        token: res.data.token,
+        // token: res.data.token,
         userNotify: res.data.userNotify,
         userData: res.data.userData,
         isLoggedIn: true
