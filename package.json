@@ -33,7 +33,7 @@
     "react-router-dom": "^4.3.1",
     "react-stripe-elements": "^2.0.3",
     "react-table": "^6.8.5",
-    "reactform-appco": "^1.0.5",
+    "reactform-appco": "^1.0.6",
     "router-express": "^1.5.2",
     "stripe": "^6.23.1",
     "uuid": "^3.3.2"

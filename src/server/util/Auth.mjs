@@ -45,21 +45,43 @@ class Auth {
 			}
 			//console.log("verified token: ", verifiedToken);
 			//if the token and cookie match, renew them
-			this.renewLogin(verifiedToken)
+			this.renewLogin(verifiedToken, cookie.token)
 		} else {
 			console.log('cookie and token are not equal')
 			this.unsetLoginHeaders()
 		}
 	}
 
-	renewLogin(verifiedToken) {
+	renewLogin(verifiedToken, prevCookiePayload) {
 		//upon authentication, renew the token and the cookie
 		this.req.headers['stripeConn'] = verifiedToken.userData.id
 		delete verifiedToken.exp
-		console.log('userdata placed into renewed token: ', verifiedToken)
-		var token = jwt.sign({ userData: verifiedToken }, process.env.JWT_SECRET, {
-			expiresIn: '1h'
+		var token = jwt.sign(
+			{ userData: verifiedToken.userData },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: '1h'
+			}
+		)
+		//clear the current cookie
+		this.clearCurrentCookie(prevCookiePayload)
+		//set new cookie that matches new token
+		this.setNewCookie(token)
+		//set headers and send response or move to next route
+		this.setLoginHeaders(token)
+	}
+
+	clearCurrentCookie() {
+		this.res.clearCookie(process.env.COOKIE_NAME, {
+			expires: new Date(Date.now() + 60 * 60 * 1000),
+			maxAge: 60 * 60 * 1000,
+			httpOnly: true,
+			secure: process.env.NODE_ENV === 'production'
 		})
+	}
+
+	setNewCookie(token) {
+		console.log('setting new cookie')
 		this.res.cookie(
 			process.env.COOKIE_NAME,
 			{ token: token },
@@ -67,10 +89,9 @@ class Auth {
 				expires: new Date(Date.now() + 60 * 60 * 1000),
 				maxAge: 60 * 60 * 1000,
 				httpOnly: true,
-				secure: process.env.NODE_ENV
+				secure: process.env.NODE_ENV === 'production'
 			}
 		)
-		this.setLoginHeaders(token)
 	}
 
 	setLoginHeaders(token) {

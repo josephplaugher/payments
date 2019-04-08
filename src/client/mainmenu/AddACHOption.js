@@ -4,7 +4,6 @@ import Select from 'Util/Select'
 import StripeInput from 'Util/StripeInput'
 import Validate from 'Util/Validate'
 import ValRules from 'Util/ValRules'
-import VerifyAmounts from './VerifyAmounts'
 import Ajax from 'Util/Ajax'
 import SetUrl from 'Util/SetUrl'
 import { Elements, injectStripe } from 'react-stripe-elements'
@@ -112,20 +111,14 @@ class AddACHOption extends React.Component {
 	response = (res) => {
 		if (res.error) {
 			// something
-		}
-		switch (res.data.resp.bankStatus) {
-			case 'verified':
-				this.setState({ userNotify: { success: 'Bank Charge Initiated' } })
-				break
-			case 'needs verified':
-				this.setState({ showVerifyPrompt: true })
-				break
-			case 'verification failed':
-				this.setState({ userNotify: { msg: 'Bank verification failed' } })
-				break
-			case 'error charging account':
-				this.setState({ userNotify: { msg: 'Error charging account' } })
-				break
+		} else {
+			this.setState({
+				userNotify: {
+					success:
+						'You have added a new bank account. ' +
+						this.props.needsValidatedMessage
+				}
+			})
 		}
 	}
 
@@ -140,35 +133,29 @@ class AddACHOption extends React.Component {
 			<div id='form-container'>
 				{/* prettier-ignore */}
 				<div id="add-new-bank">
-        <form onSubmit={this.onSubmit} >
-            <Elements>
-                <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onStripeChange} />
-            </Elements>
-            <Elements>
-                <Select id="type" label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
-            </Elements>
-            <Elements>
-                <StripeInput id="acctno" label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onStripeChange} />
-            </Elements>
-            <Elements>
-                <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onStripeChange} />
-            </Elements>
-            <div className="button-div">
-                <Button value="Add Bank" id="submit" />
-            </div>
-        </form>
+		<p className="formTitle">Add New Bank Account</p>
+        	<form onSubmit={this.onSubmit} >
+        	    <Elements>
+        	        <StripeInput id="acctholder" label="Account Holder Name" value={this.state.acctholder} error={this.state.userErrors.acctholder} onChange={this.onStripeChange} />
+        	    </Elements>
+        	    <Elements>
+        	        <Select id="type" label="Account Holder Type" options={typeOptions} value={this.state.type} onChange={this.onChange} />
+        	    </Elements>
+        	    <Elements>
+        	        <StripeInput id="acctno" label="Bank Account Number" value={this.state.acctno} error={this.state.userErrors.acctno} onChange={this.onStripeChange} />
+        	    </Elements>
+        	    <Elements>
+        	        <StripeInput id="routingno" label="Routing Number" value={this.state.routingno} error={this.state.userErrors.routingno} onChange={this.onStripeChange} />
+        	    </Elements>
+					<div className="button-div">
+						<Button value="Add Bank" id="submit" />
+					</div>
+        	</form>
         </div>
-				{this.state.showVerifyPrompt ? (
-					<VerifyAmounts
-						needsValidatedMessage={this.props.needsValidatedMessage}
-						close={this.close}
-					/>
-				) : null}
 				<div id='user-notify'>
 					<p className='success-msg'>{this.state.userNotify.success}</p>
 					<p className='error-msg'>{this.state.userNotify.msg}</p>
 				</div>
-				<p className='text'>{needsValidatedMessage}</p>
 			</div>
 		)
 	}

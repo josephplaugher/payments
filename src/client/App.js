@@ -95,7 +95,7 @@ class AppreciateCo extends FormClass {
 							<p className='formTitle'>Sign In</p>
 							{/* prettier-ignore */}
 							<form onSubmit={this.rfa_onSubmit} >
-                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} />
+                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} autoComplete={true}/>
                   <Input name="password" label="Password" value={this.state.password} onChange={this.rfa_onChange} />
                   <div className="rfa_button-div">
                     <Button id="submit" value="Sign In" />
