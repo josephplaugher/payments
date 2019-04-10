@@ -1,9 +1,20 @@
 import Ajax from './Ajax'
 import SetUrl from './SetUrl'
+import RenewTokenClient from './RenewTokenClient'
 
-const checkLoginState = () => {
+const checkLoginState = (newToken) => {
+	//a newToken is provided only if CheckLoginState is called after a CRUD operation
+	//otherwise the token in sessionStorage will be used.
+	var AppCoToken = ''
+	if (newToken) {
+		console.log('using new token: ', newToken)
+		sessionStorage.setItem(process.env.TOKEN_NAME, newToken)
+		AppCoToken = newToken
+	} else {
+		AppCoToken = sessionStorage.getItem(process.env.TOKEN_NAME)
+		console.log('using token from storage', AppCoToken)
+	}
 	return new Promise((resolve, reject) => {
-		const AppCoToken = sessionStorage.getItem(process.env.TOKEN_NAME)
 		//if there is a token
 		if (AppCoToken) {
 			Ajax.get(SetUrl() + '/checkLoginState')
@@ -11,9 +22,9 @@ const checkLoginState = () => {
 					reject('error checking login state: ', e)
 				})
 				.then((response) => {
-					console.log('resp: ', response)
-					console.log('token: ', response.headers.token)
-					console.log('authorized: ', response.headers.authorized)
+					// console.log('resp: ', response)
+					// console.log('token: ', response.headers.token)
+					// console.log('authorized: ', response.headers.authorized)
 					if (response.headers.token && response.headers.authorized) {
 						console.log('token and cookie are set')
 						let userData = JSON.parse(
@@ -28,7 +39,7 @@ const checkLoginState = () => {
 							userData: userData
 						})
 					} else {
-						console.log('not authorized, headers not set')
+						// console.log('not authorized, headers not set')
 						sessionStorage.removeItem(process.env.USER_DATA_LABEL)
 						sessionStorage.removeItem(process.env.TOKEN_NAME)
 					}

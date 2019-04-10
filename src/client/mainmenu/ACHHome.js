@@ -25,7 +25,7 @@ class ACHHome extends React.Component {
 		}
 		this.showAddNew = this.showAddNew.bind(this)
 		this.checkBankStatusValue = this.checkBankStatusValue.bind(this)
-		this.payOrValidate = this.payOrValidate.bind(this)
+		//this.payOrValidate = this.payOrValidate.bind(this)
 		this.close = this.close.bind(this)
 	}
 
@@ -43,7 +43,9 @@ class ACHHome extends React.Component {
 				<p className='text'>{`Status: ${item.status} `}</p>
 				<Button
 					className='rfa_submit'
-					onClick={() => this.payOrValidate(item.status).bind(this)}
+					onClick={() => {
+						this.payOrValidate(item)
+					}}
 					value={this.checkBankStatusValue(item.status)}
 				/>
 				<Button
@@ -64,11 +66,18 @@ class ACHHome extends React.Component {
 		}
 	}
 
-	payOrValidate(status) {
-		if (status === 'verified') {
+	payOrValidate(source) {
+		console.log('source id: ', source.id)
+		if (source.status === 'verified') {
 			this.setState({ showPayWindow: true, showVerifyWindow: false })
 		} else {
-			this.setState({ showVerifyWindow: true, showPayWindow: false })
+			console.log('source last4: ', source.last4)
+			this.setState({
+				showVerifyWindow: true,
+				showPayWindow: false,
+				accountToVerify: source.last4,
+				accountIDToVerify: source.id
+			})
 		}
 	}
 
@@ -124,6 +133,8 @@ class ACHHome extends React.Component {
 				{this.state.showVerifyWindow ? (
 					<VerifyAmounts
 						needsValidatedMessage={needsValidatedMessage}
+						accountToVerify={this.state.accountToVerify}
+						accountIDToVerify={this.state.accountIDToVerify}
 						close={this.close}
 					/>
 				) : null}

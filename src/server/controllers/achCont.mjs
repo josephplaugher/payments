@@ -1,14 +1,10 @@
-import express from "express";
+import express from 'express'
 //import ACH from "./model/ach/ACH.mjs";
-import AddACH from "./model/ach/AddACH.mjs";
+import AddACH from './model/ach/AddACH.mjs'
+import VerifyACH from './model/ach/VerifyACH'
+const routes = express.Router()
 
-const routes = express.Router();
+routes.post('/addACH', AddACH)
+routes.post('/verifyACH', VerifyACH)
 
-// routes.post("/addACH", (req, res) => {
-//   const New = new ACH(req, res)();
-//   //New.checkIfCustomerExists();
-// });
-
-routes.post("/addACH", AddACH);
-
-export default routes;
+export default routes

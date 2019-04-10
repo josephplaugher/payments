@@ -22,7 +22,7 @@ class AppreciateCo extends FormClass {
 			error: null,
 			isLoggedIn: false,
 			userData: {},
-			email: '',
+			email: 'test@test.com',
 			password: ''
 		}
 		this.setLoginState = this.setLoginState.bind(this)

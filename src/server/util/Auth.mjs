@@ -54,6 +54,7 @@ class Auth {
 
 	renewLogin(verifiedToken, prevCookiePayload) {
 		//upon authentication, renew the token and the cookie
+		console.log('stripeConn', verifiedToken.userData.id)
 		this.req.headers['stripeConn'] = verifiedToken.userData.id
 		delete verifiedToken.exp
 		var token = jwt.sign(
@@ -72,6 +73,7 @@ class Auth {
 	}
 
 	clearCurrentCookie() {
+		console.log('clearing old cookie')
 		this.res.clearCookie(process.env.COOKIE_NAME, {
 			expires: new Date(Date.now() + 60 * 60 * 1000),
 			maxAge: 60 * 60 * 1000,
@@ -95,12 +97,14 @@ class Auth {
 	}
 
 	setLoginHeaders(token) {
+		console.log('setting login headers')
 		this.res.header(this.authorized, true)
 		this.res.header('token', token)
 		this.next()
 	}
 
 	unsetLoginHeaders() {
+		console.log('deleting login headers')
 		this.res.header(this.authorized, '')
 		this.res.header('token', '')
 		this.next()
