@@ -2,23 +2,24 @@ import React from 'react'
 import { FormClass, Input, Button } from 'reactform-appco'
 import LightBox from 'lightbox-appco'
 import ValRules from 'Util/ValRules'
-import RenewTokenClient from 'Util/RenewTokenClient'
 import CheckLoginState from 'Util/CheckLoginState'
 
-class VerifyAmounts extends FormClass {
+class PayInvoice extends FormClass {
 	constructor(props) {
 		super(props)
 		this.useLiveSearch = false
-		this.route = '/verifyACH'
+		this.route = '/payInvoiceViaACH'
 		this.valRules = ValRules
-		this.extraData = { bankID: this.props.accountIDToVerify }
+		this.extraData = {
+			bankID: this.props.payBank.id
+		}
 		this.rfa_headers = { csrf: sessionStorage.getItem(process.env.TOKEN_NAME) }
 		this.state = {
 			userNotify: {},
 			userErrors: {},
-			amount1: '',
-			amount2: '',
-			formData: { amount1: '', amount2: '' }
+			invoice: '',
+			amount: '',
+			formData: { invoice: '', amount: '' }
 		}
 	}
 
@@ -29,9 +30,7 @@ class VerifyAmounts extends FormClass {
 	}
 
 	render() {
-		const displayAcctNo = `Account to Verify: ******${
-			this.props.accountToVerify
-		} `
+		const displayAcctNo = `Pay using account ******${this.props.payBank.last4} `
 
 		return (
 			<LightBox
@@ -47,24 +46,23 @@ class VerifyAmounts extends FormClass {
 					left: '5'
 				}}
 			>
-				<div id='verify-bank'>
-					<p className='text'>
-						Enter the amount of the two deposits to verify your bank account
-					</p>
+				<div id='pay-invoice'>
 					{/* prettier-ignore */}
 					<form onSubmit={this.rfa_onSubmit} >
           <p className='text'>{displayAcctNo}</p>
-            <Input name="amount1" label="Amount 1" value={this.state.amount1} error={this.state.userNotify.amount1} onChange={this.rfa_onChange} />
-            <Input name="amount2" label="Amount 2" value={this.state.amount2} error={this.state.userNotify.amount2} onChange={this.rfa_onChange} /><br />
+						<Input name="invoice" label="Invoice Number" value={this.state.invoice} error={this.state.userNotify.invoice} onChange={this.rfa_onChange} />
+            <Input name="amount" label="Payment Amount" value={this.state.amount} error={this.state.userNotify	.amount} onChange={this.rfa_onChange} /><br />
             <div className="button-div">
-                <Button value="Verify Bank" id="submit" />
+                <Button value="Pay Now" id="submit" />
+            </div>
+            <div id="user-notify">
+                <p className="success-msg">{this.state.chargeComplete}</p>
             </div>
         </form>
-					<p className='text'>{this.props.needsValidatedMessage}</p>
 				</div>
 			</LightBox>
 		)
 	}
 }
 
-export default VerifyAmounts
+export default PayInvoice

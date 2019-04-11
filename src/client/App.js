@@ -35,7 +35,7 @@ class AppreciateCo extends FormClass {
 	setLoginState = () => {
 		let auth = checkLoginState()
 		auth.then((res) => {
-			console.log('check login state resp: ', res)
+			// console.log('check login state resp: ', res)
 			if (res.isLoggedIn === true) {
 				this.setState({
 					isLoggedIn: res.isLoggedIn,

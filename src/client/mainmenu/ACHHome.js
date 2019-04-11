@@ -1,9 +1,10 @@
 import React from 'react'
 import { Button } from 'reactform-appco'
-import AddACHOption from './AddACHOption'
 import LightBox from 'lightbox-appco'
 import ValRules from 'Util/ValRules'
-import VerifyAmounts from './VerifyAmounts'
+import AddACHOption from './ach/AddACHOption'
+import VerifyAmounts from './ach/VerifyAmounts'
+import PayInvoice from './ach/PayInvoice'
 import { Elements } from 'react-stripe-elements'
 
 import 'css/main.css'
@@ -25,13 +26,12 @@ class ACHHome extends React.Component {
 		}
 		this.showAddNew = this.showAddNew.bind(this)
 		this.checkBankStatusValue = this.checkBankStatusValue.bind(this)
-		//this.payOrValidate = this.payOrValidate.bind(this)
 		this.close = this.close.bind(this)
 	}
 
 	componentDidMount() {
 		const bankList = this.props.userData.sources.data
-		console.log('source: ', bankList)
+		console.log('sources: ', this.props.userData.sources)
 		const banks = bankList.map((item) => (
 			<div className='ach-option' key={item.last4}>
 				<p className='text'>{`Bank Name: ${item.bank_name} `}</p>
@@ -67,9 +67,12 @@ class ACHHome extends React.Component {
 	}
 
 	payOrValidate(source) {
-		console.log('source id: ', source.id)
 		if (source.status === 'verified') {
-			this.setState({ showPayWindow: true, showVerifyWindow: false })
+			this.setState({
+				showPayWindow: true,
+				showVerifyWindow: false,
+				payBank: source
+			})
 		} else {
 			console.log('source last4: ', source.last4)
 			this.setState({
@@ -86,7 +89,11 @@ class ACHHome extends React.Component {
 	}
 
 	close() {
-		this.setState({ showAddNew: false, showVerifyWindow: false })
+		this.setState({
+			showAddNew: false,
+			showVerifyWindow: false,
+			showPayWindow: false
+		})
 	}
 
 	render() {
@@ -138,7 +145,9 @@ class ACHHome extends React.Component {
 						close={this.close}
 					/>
 				) : null}
-				{this.state.showPayWindow ? <p>put pay window here</p> : null}
+				{this.state.showPayWindow ? (
+					<PayInvoice payBank={this.state.payBank} close={this.props.close} />
+				) : null}
 			</div>
 		)
 	}
