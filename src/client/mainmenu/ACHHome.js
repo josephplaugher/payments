@@ -5,6 +5,7 @@ import ValRules from 'Util/ValRules'
 import AddACHOption from './ach/AddACHOption'
 import VerifyAmounts from './ach/VerifyAmounts'
 import PayInvoice from './ach/PayInvoice'
+import DeleteBank from './ach/DeleteBank'
 import { Elements } from 'react-stripe-elements'
 
 import 'css/main.css'
@@ -22,11 +23,14 @@ class ACHHome extends React.Component {
 			showAddNew: false,
 			showVerifyWindow: false,
 			showPayWindow: false,
+			showDeleteBank: false,
+			deleteBank: {},
 			bankList: []
 		}
 		this.showAddNew = this.showAddNew.bind(this)
 		this.checkBankStatusValue = this.checkBankStatusValue.bind(this)
 		this.close = this.close.bind(this)
+		this.deleteBank = this.deleteBank.bind(this)
 	}
 
 	componentDidMount() {
@@ -50,7 +54,9 @@ class ACHHome extends React.Component {
 				/>
 				<Button
 					className='rfa_submit'
-					onClick={this.delete}
+					onClick={() => {
+						this.deleteBank(item)
+					}}
 					value='Delete This Bank'
 				/>
 			</div>
@@ -88,11 +94,16 @@ class ACHHome extends React.Component {
 		this.setState({ showAddNew: true })
 	}
 
+	deleteBank(item) {
+		this.setState({ showDeleteBank: true, deleteBank: item })
+	}
+
 	close() {
 		this.setState({
 			showAddNew: false,
 			showVerifyWindow: false,
-			showPayWindow: false
+			showPayWindow: false,
+			showDeleteBank: false
 		})
 	}
 
@@ -146,7 +157,10 @@ class ACHHome extends React.Component {
 					/>
 				) : null}
 				{this.state.showPayWindow ? (
-					<PayInvoice payBank={this.state.payBank} close={this.props.close} />
+					<PayInvoice payBank={this.state.payBank} close={this.close} />
+				) : null}
+				{this.state.showDeleteBank ? (
+					<DeleteBank deleteBank={this.state.deleteBank} close={this.close} />
 				) : null}
 			</div>
 		)
