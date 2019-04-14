@@ -1,5 +1,6 @@
 import React from 'react'
 import { FormClass, Input, Button } from 'reactform-appco'
+import Ajax from 'Util/Ajax'
 import SetUrl from 'Util/SetUrl'
 import ValRules from 'Util/ValRules'
 import EB from 'Util/EB'
@@ -22,12 +23,13 @@ class AppreciateCo extends FormClass {
 			error: null,
 			isLoggedIn: false,
 			userData: {},
-			email: 'test@test.com',
+			email: '',
 			password: ''
 		}
 		this.setLoginState = this.setLoginState.bind(this)
 		this.response = this.response.bind(this)
 		this.setStripeKey = this.setStripeKey.bind(this)
+		this.refreshStripeSources = this.refreshStripeSources.bind(this)
 		this.setStripeKey()
 		this.setLoginState()
 	}
@@ -77,6 +79,13 @@ class AppreciateCo extends FormClass {
 		}
 	}
 
+	refreshStripeSources() {
+		Ajax.get(SetUrl() + '/refreshStripeSources').then((res) => {
+			console.log('refreshing userdata: ', res.data.userData)
+			this.setState({ userData: res.data.userData })
+		})
+	}
+
 	render() {
 		return (
 			<div id='container'>
@@ -87,7 +96,10 @@ class AppreciateCo extends FormClass {
 					{this.state.isLoggedIn ? (
 						<EB comp='Home'>
 							<StripeProvider apiKey={this.stripeKey}>
-								<Home userData={this.state.userData} />
+								<Home
+									userData={this.state.userData}
+									resfreshSources={this.refreshStripeSources}
+								/>
 							</StripeProvider>
 						</EB>
 					) : (

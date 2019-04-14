@@ -111,8 +111,8 @@ class ACHHome extends React.Component {
 		const needsValidatedMessage = `We'll need to verify your
     bank account. We will send two small deposits to your account with
     description "AMNTS" which will take 1-2 business days to appear in
-    your account. When you have those amount, come back and enter them to
-    verify your account and you may then pay using ACH`
+    your account. When you have those amounts, come back and enter them to
+    verify your account. Then you can pay using ACH.`
 
 		return (
 			<div id='working-pane'>
@@ -153,6 +153,7 @@ class ACHHome extends React.Component {
 						needsValidatedMessage={needsValidatedMessage}
 						accountToVerify={this.state.accountToVerify}
 						accountIDToVerify={this.state.accountIDToVerify}
+						resfreshSources={this.props.refreshStripeSources}
 						close={this.close}
 					/>
 				) : null}
@@ -160,7 +161,11 @@ class ACHHome extends React.Component {
 					<PayInvoice payBank={this.state.payBank} close={this.close} />
 				) : null}
 				{this.state.showDeleteBank ? (
-					<DeleteBank deleteBank={this.state.deleteBank} close={this.close} />
+					<DeleteBank
+						deleteBank={this.state.deleteBank}
+						resfreshSources={this.props.refreshStripeSources}
+						close={this.close}
+					/>
 				) : null}
 			</div>
 		)

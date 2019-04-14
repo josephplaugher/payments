@@ -22,7 +22,15 @@ const VerifyACH = (req, res) => {
 			console.error('error verifying bank account ', error)
 			res.status(200).json({ success: false, error: error })
 		} else {
-			res.status(200).json({ success: true })
+			res
+				.status(200)
+				.json({
+					success: true,
+					userNotify: {
+						success:
+							'Thank you, your bank account has been verified and is now ready to use for payments!'
+					}
+				})
 		}
 	})
 }

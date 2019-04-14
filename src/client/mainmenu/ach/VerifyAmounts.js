@@ -24,7 +24,8 @@ class VerifyAmounts extends FormClass {
 	response(res) {
 		// renew the client side token after form submit
 		CheckLoginState(res.headers.token)
-		console.log('verify response: ', res)
+		this.setState({ userNotify: res.data.userNotify })
+		this.props.refreshSources()
 	}
 
 	render() {
@@ -60,6 +61,7 @@ class VerifyAmounts extends FormClass {
             </div>
         </form>
 					<p className='text'>{this.props.needsValidatedMessage}</p>
+					<p className='text'>{this.userNotify.success}</p>
 				</div>
 			</LightBox>
 		)

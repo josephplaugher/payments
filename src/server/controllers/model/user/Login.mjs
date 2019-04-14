@@ -17,13 +17,8 @@ class Login extends UserBase {
 		// finally, we add their list of payment sources for use
 		// on the client side.
 		let users = await this.getCustomersByEmail()
-		let u = users.data[0]
-		// console.log("users:  ", users);
-		let userData = JSON.parse(u.description)
-		userData['id'] = u.id
-		userData['default_source'] = u.default_source
-		userData['email'] = u.email
-		userData['sources'] = u.sources
+		let user = users.data[0]
+		let userData = this.buildUserObject(user)
 		this.checkPassword(this.req, this.res, userData)
 	}
 
