@@ -8,6 +8,15 @@ import Auth from './util/Auth'
 import userCont from './controllers/userCont'
 import achCont from './controllers/achCont'
 import ccCont from './controllers/ccCont'
+import Sentry from '@sentry/node'
+
+Sentry.init({
+	dsn: 'https://795905e8dd5147f4bd771d1203661434@sentry.io/payment'
+})
+// The request handler must be the first middleware on the app
+app.use(Sentry.Handlers.requestHandler())
+// The error handler must be before any other error middleware
+app.use(Sentry.Handlers.errorHandler())
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs')
