@@ -1,48 +1,40 @@
-const ValRules = [
-    {   
-        mode: function() {
-            if(process.env.NODE_ENV === 'development'){ 
-                return 'development';
-            }else{
-                return 'production';
-            }   
-        }
-    },
-    {   
-        log:{
-            dev: function(data) { console.log(data)},
-            prod: function(data) { console.log(data)}
-            }
-    },
-    {
-        name: 'username',
-        required: true,
-        alphanumeric: 'true',
-        errorMsg: 'Username is required'
-    },
-    {
-        name: 'email',
-        required: true,
-        email: true,
-        errorMsg: 'That email or password is not valid'
-    },
-    {
-        name: 'password',
-        required: true,
-        errorMsg: 'That email or password is not valid'
-    },
-    {
-        name: 'message',
-        required: true,
-        alphanumeric: true,
-        errorMsg: 'Please tell us a little about your business needs'
-    },
-    {
-        name: 'date',
-        required: true,
-        alphanumeric: true,
-        errorMsg: 'Please provide a date'
-    }
-]
+const ValRules = {
+	settings: {
+		mode: process.env.NODE_ENV,
+		log: {
+			dev: function(data) {
+				console.log(data)
+			},
+			prod: function(data) {
+				// console.log(data)
+			}
+		}
+	},
+	rules: [
+		{
+			name: 'invoice',
+			required: true,
+			errorMsg: 'Invoice number required'
+		},
+		{
+			name: 'amount',
+			required: true,
+			numeric: true,
+			errorMsg: 'Payment amount required'
+		},
+		{
+			name: 'amount1',
+			required: true,
+			numeric: true,
+			errorMsg: 'Enter the first verification deposit from your bank account'
+		},
+		{
+			name: 'amount2',
+			required: true,
+			numeric: true,
+			errorMsg: 'Enter the second verification deposit from your bank account'
+		}
+	]
+}
 
-export default ValRules;
+export default ValRules

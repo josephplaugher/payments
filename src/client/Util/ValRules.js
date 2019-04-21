@@ -6,7 +6,7 @@ const ValRules = {
 				console.log(data)
 			},
 			prod: function(data) {
-				console.log(data)
+				// console.log(data)
 			}
 		}
 	},

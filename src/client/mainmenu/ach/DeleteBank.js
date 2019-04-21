@@ -23,7 +23,6 @@ class DeleteBank extends FormClass {
 	response(res) {
 		// renew the client side token after form submit
 		CheckLoginState(res.headers.token)
-		console.log('verify response: ', res)
 		this.props.refreshSources()
 		this.props.close()
 	}

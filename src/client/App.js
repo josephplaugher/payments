@@ -30,6 +30,7 @@ class AppreciateCo extends FormClass {
 		this.response = this.response.bind(this)
 		this.setStripeKey = this.setStripeKey.bind(this)
 		this.refreshStripeSources = this.refreshStripeSources.bind(this)
+		this.signOut = this.signOut.bind(this)
 		this.setStripeKey()
 		this.setLoginState()
 	}
@@ -37,7 +38,6 @@ class AppreciateCo extends FormClass {
 	setLoginState = () => {
 		let auth = checkLoginState()
 		auth.then((res) => {
-			// console.log('check login state resp: ', res)
 			if (res.isLoggedIn === true) {
 				this.setState({
 					isLoggedIn: res.isLoggedIn,
@@ -81,9 +81,19 @@ class AppreciateCo extends FormClass {
 
 	refreshStripeSources() {
 		Ajax.get(SetUrl() + '/refreshStripeSources').then((res) => {
-			console.log('refreshing userdata: ', res.data.userData)
 			this.setState({ userData: res.data.userData })
 		})
+	}
+
+	signOut() {
+		console.log('sign out')
+		sessionStorage.removeItem(process.env.USER_DATA_LABEL)
+		sessionStorage.removeItem(process.env.TOKEN_NAME)
+		this.setState({
+			isLoggedIn: false,
+			userData: {}
+		})
+		Ajax.get(SetUrl() + '/user/logout')
 	}
 
 	render() {
@@ -99,6 +109,7 @@ class AppreciateCo extends FormClass {
 								<Home
 									userData={this.state.userData}
 									resfreshSources={this.refreshStripeSources}
+									signOut={this.signOut}
 								/>
 							</StripeProvider>
 						</EB>

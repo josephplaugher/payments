@@ -26,7 +26,6 @@ class PayInvoice extends FormClass {
 	response(res) {
 		// renew the client side token after form submit
 		CheckLoginState(res.headers.token)
-		console.log('verify response: ', res)
 	}
 
 	render() {

@@ -7,12 +7,10 @@ const checkLoginState = (newToken) => {
 	// on a users page refresh
 	var AppCoToken = ''
 	if (newToken) {
-		// console.log('using new token: ', newToken)
 		sessionStorage.setItem(process.env.TOKEN_NAME, newToken)
 		AppCoToken = newToken
 	} else {
 		AppCoToken = sessionStorage.getItem(process.env.TOKEN_NAME)
-		// console.log('using token from storage', AppCoToken)
 	}
 	return new Promise((resolve, reject) => {
 		//if there is a token
@@ -22,11 +20,7 @@ const checkLoginState = (newToken) => {
 					reject('error checking login state: ', e)
 				})
 				.then((response) => {
-					// console.log('resp: ', response)
-					// console.log('token: ', response.headers.token)
-					// console.log('authorized: ', response.headers.authorized)
 					if (response.headers.token && response.headers.authorized) {
-						// console.log('token and cookie are set')
 						let userData = JSON.parse(
 							sessionStorage.getItem(process.env.USER_DATA_LABEL)
 						)
@@ -39,7 +33,6 @@ const checkLoginState = (newToken) => {
 							userData: userData
 						})
 					} else {
-						// console.log('not authorized, headers not set')
 						sessionStorage.removeItem(process.env.USER_DATA_LABEL)
 						sessionStorage.removeItem(process.env.TOKEN_NAME)
 						resolve({
@@ -50,7 +43,6 @@ const checkLoginState = (newToken) => {
 				})
 		} else {
 			//if there is no token
-			// console.log('not authorized, no token')
 			sessionStorage.removeItem(process.env.USER_DATA_LABEL)
 			sessionStorage.removeItem(process.env.TOKEN_NAME)
 			resolve({

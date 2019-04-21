@@ -86,14 +86,12 @@ class AddACHOption extends React.Component {
 		})
 		getToken.then((res) => {
 			if (typeof res.error !== 'undefined') {
-				console.log('stripe error: ', res.error)
 				this.setState({
 					userErrors: {
 						stripeInputError: res.error
 					}
 				})
 			} else {
-				console.log('Received Stripe token:', res.token)
 				let data = Object.assign({ token: res.token.id }, this.state.submitData)
 				//send the token to the server using the correct route for this payment method
 				this.sendToken(data, '/addACH')
@@ -102,7 +100,6 @@ class AddACHOption extends React.Component {
 	}
 
 	sendToken = (data, route) => {
-		console.log('the data: ', data)
 		Ajax.post(SetUrl() + route, data).then((res) => {
 			this.response(res)
 		})
