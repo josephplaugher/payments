@@ -1,6 +1,6 @@
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import UserBase from './UserBase'
+import UserBase from './UserBase.mjs'
 
 class Login extends UserBase {
 	constructor(req, res) {

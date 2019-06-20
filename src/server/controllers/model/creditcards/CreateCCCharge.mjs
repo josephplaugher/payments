@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey'
+import SetStripeKey from './../../model/SetStripeKey.mjs'
 
 class CreateCharge {
 	constructor(req, res) {

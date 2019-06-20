@@ -1,4 +1,5 @@
 {
+	"type": "module",
 	"name": "payments",
 	"version": "1.0.0",
 	"private": true,
@@ -7,7 +8,7 @@
 		"start": "concurrently \"npm run build:dev\" \"npm run start-server:dev\"",
 		"build": "npm run build:prod && npm run start-server:prod",
 		"build:dev": "webpack --config webpack-dev.config.js",
-		"build:prod": "NODE_ENV=production webpack --config webpack-prod.config.js",
+		"build:prod": "webpack -p --config webpack-prod.config.js",
 		"start-server:dev": "NODE_ENV=development nodemon --config nodemon.json --experimental-modules src/server/index.mjs ",
 		"start-server:prod": "NODE_ENV=production forever start forever-config.json"
 	},

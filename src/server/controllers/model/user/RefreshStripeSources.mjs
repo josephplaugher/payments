@@ -1,5 +1,5 @@
-import UserBase from './UserBase'
-import SetStripeKey from './../SetStripeKey'
+import UserBase from './UserBase.mjs'
+import SetStripeKey from './../SetStripeKey.mjs'
 
 class RefreshStripeSources extends UserBase {
 	constructor(req, res) {
