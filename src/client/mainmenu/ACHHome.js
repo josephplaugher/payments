@@ -35,7 +35,6 @@ class ACHHome extends React.Component {
 
 	componentDidMount() {
 		const bankList = this.props.userData.sources.data
-		console.log('sources: ', this.props.userData.sources)
 		const banks = bankList.map((item) => (
 			<div className='ach-option' key={item.last4}>
 				<p className='text'>{`Bank Name: ${item.bank_name} `}</p>
@@ -80,7 +79,6 @@ class ACHHome extends React.Component {
 				payBank: source
 			})
 		} else {
-			console.log('source last4: ', source.last4)
 			this.setState({
 				showVerifyWindow: true,
 				showPayWindow: false,

@@ -1,4 +1,4 @@
-import SetStripeKey from './../SetStripeKey'
+import SetStripeKey from './../SetStripeKey.mjs'
 
 class UserBase {
 	constructor(req, res) {
