@@ -10,7 +10,7 @@
 		"build:dev": "webpack --config webpack-dev.config.js",
 		"build:prod": "webpack -p --config webpack-prod.config",
 		"start-server:dev": " nodemon src/server/index ",
-		"start-server:prod": "NODE_ENV=production forever -o ./forever-out.log -e ./forever-error.log start forever-config.json"
+		"start-server:prod": "NODE_ENV=production pm2 start ./src/server/index.js"
 	},
 	"dependencies": {
 		"axios": "^0.18.0",
