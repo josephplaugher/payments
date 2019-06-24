@@ -14,4 +14,4 @@ const Logout = (req, res) => {
 	res.status(200).json({ loggedout: true })
 }
 
-export default Logout
+module.exports = Logout

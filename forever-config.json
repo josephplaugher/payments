@@ -5,5 +5,5 @@
 	"minUptime": 1000,
 	"append": true,
 	"watch": false,
-	"script": "--experimental-modules src/server/index.mjs"
+	"script": "src/server/index.js"
 }

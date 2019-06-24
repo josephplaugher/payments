@@ -1,4 +1,4 @@
-import SetStripeKey from './../SetStripeKey.mjs'
+const SetStripeKey = require('./../SetStripeKey.js')
 
 class UserBase {
 	constructor(req, res) {
@@ -34,4 +34,4 @@ class UserBase {
 	}
 }
 
-export default UserBase
+module.exports = UserBase

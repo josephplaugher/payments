@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken'
+const jwt = require( 'jsonwebtoken')
 
 class Auth {
 	constructor(req, res, next) {
@@ -93,4 +93,4 @@ class Auth {
 	}
 }
 
-export default Auth
+module.exports = Auth

@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey.mjs'
+const SetStripeKey = require('./../../model/SetStripeKey.js')
 
 const VerifyACH = (req, res) => {
 	const i = req.body
@@ -28,4 +28,4 @@ const VerifyACH = (req, res) => {
 	})
 }
 
-export default VerifyACH
+module.exports = VerifyACH

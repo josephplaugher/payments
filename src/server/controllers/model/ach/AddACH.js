@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey.mjs'
+const SetStripeKey = require('./../../model/SetStripeKey.js')
 
 const AddACH = (req, res) => {
 	const stripe = SetStripeKey()
@@ -14,4 +14,4 @@ const AddACH = (req, res) => {
 	})
 }
 
-export default AddACH
+module.exports = AddACH

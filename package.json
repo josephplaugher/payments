@@ -8,9 +8,9 @@
 		"start": "concurrently \"npm run build:dev\" \"npm run start-server:dev\"",
 		"build": "npm run build:prod && npm run start-server:prod",
 		"build:dev": "webpack --config webpack-dev.config.js",
-		"build:prod": "webpack -p --config webpack-prod.config.js",
-		"start-server:dev": "NODE_ENV=development nodemon --experimental-modules src/server/index.js ",
-		"start-server:prod": "NODE_ENV=production --experimental-modules forever -o ./forever-out.log -e ./forever-error.log start forever-config.json"
+		"build:prod": "webpack -p --config webpack-prod.config",
+		"start-server:dev": " nodemon src/server/index ",
+		"start-server:prod": "NODE_ENV=production forever -o ./forever-out.log -e ./forever-error.log start forever-config.json"
 	},
 	"dependencies": {
 		"axios": "^0.18.0",

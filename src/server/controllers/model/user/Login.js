@@ -1,6 +1,6 @@
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import UserBase from './UserBase.mjs'
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
+const UserBase = require('./UserBase.js')
 
 class Login extends UserBase {
 	constructor(req, res) {
@@ -70,4 +70,4 @@ class Login extends UserBase {
 	}
 }
 
-export default Login
+module.exports = Login

@@ -9,4 +9,4 @@ const SetUrl = () => {
   return url;
 };
 
-export default SetUrl;
+module.exports = SetUrl;

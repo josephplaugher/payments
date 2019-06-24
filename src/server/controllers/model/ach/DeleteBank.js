@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey.mjs'
+const SetStripeKey = require('./../../model/SetStripeKey.js')
 
 const DeleteBank = (req, res) => {
 	const stripe = SetStripeKey()
@@ -15,4 +15,4 @@ const DeleteBank = (req, res) => {
 	})
 }
 
-export default DeleteBank
+module.exports = DeleteBank

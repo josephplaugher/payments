@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey.mjs'
+const SetStripeKey = require('./../../model/SetStripeKey.js')
 
 const PayInvoiceViaACH = (req, res) => {
 	const i = req.body
@@ -18,5 +18,4 @@ const PayInvoiceViaACH = (req, res) => {
 		}
 	})
 }
-
-export default PayInvoiceViaACH
+module.exports = PayInvoiceViaACH

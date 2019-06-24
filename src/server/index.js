@@ -1,14 +1,13 @@
-import dotenv from 'dotenv'
-dotenv.config()
-import express from 'express'
-import bodyParser from 'body-parser'
+const dotenv = require('dotenv').config()
+const express = require('express')
+const bodyParser = require('body-parser')
 const app = express()
-import cookieParser from 'cookie-parser'
-import SetUrl from './util/SetUrl.mjs'
-import Auth from './util/Auth.mjs'
-import userCont from './controllers/userCont.mjs'
-import achCont from './controllers/achCont.mjs'
-import ccCont from './controllers/ccCont.mjs'
+const cookieParser = require('cookie-parser')
+const SetUrl = require('./util/SetUrl.js')
+const Auth = require('./util/Auth.js')
+const userCont = require('./controllers/userCont.js')
+const achCont = require('./controllers/achCont.js')
+const ccCont = require('./controllers/ccCont.js')
 
 app.use(express.static('public'))
 app.set('view engine', 'ejs')

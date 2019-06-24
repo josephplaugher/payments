@@ -1,5 +1,5 @@
-import UserBase from './UserBase.mjs'
-import SetStripeKey from './../SetStripeKey.mjs'
+const UserBase = require('./UserBase.js')
+const SetStripeKey = require('./../SetStripeKey.js')
 
 class RefreshStripeSources extends UserBase {
 	constructor(req, res) {
@@ -18,4 +18,4 @@ class RefreshStripeSources extends UserBase {
 	}
 }
 
-export default RefreshStripeSources
+module.exports = RefreshStripeSources

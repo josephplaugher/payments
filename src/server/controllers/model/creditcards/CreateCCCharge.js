@@ -1,4 +1,4 @@
-import SetStripeKey from './../../model/SetStripeKey.mjs'
+const SetStripeKey = require('./../SetStripeKey.js')
 
 class CreateCharge {
 	constructor(req, res) {
@@ -31,4 +31,4 @@ class CreateCharge {
 	}
 }
 
-export default CreateCharge
+module.exports = CreateCharge
