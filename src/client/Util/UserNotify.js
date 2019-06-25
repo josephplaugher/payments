@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-class UserNotify extends Component {
-    render() {
-        return (
-            <p className="userNotify">{this.props.message}</p>
-        )
-    };
+const UserNotify = (props) => {
+	if (props.type === 'error') {
+		return <p className='error'>{props.error}</p>
+	}
+	if (props.type === 'message') {
+		return <p className='userNotify'>{props.message}</p>
+	}
 }
 
-export default UserNotify;
+export default UserNotify

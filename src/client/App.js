@@ -6,6 +6,8 @@ import ValRules from 'Util/ValRules'
 import EB from 'Util/EB'
 import checkLoginState from 'Util/CheckLoginState'
 import Home from './mainmenu/Home'
+import Login from './Login'
+import NewUser from './NewUser'
 import { StripeProvider } from 'react-stripe-elements'
 import Logo from './AppreciateLogo.png'
 
@@ -22,13 +24,19 @@ class AppreciateCo extends FormClass {
 		this.stripeKey = ''
 		this.state = {
 			error: null,
-			isLoggedIn: false,
+			userNotify: {},
+			isLoggedIn: true,
+			newUser: false,
+			login: false,
 			userData: {},
 			email: '',
 			password: ''
 		}
 		this.setLoginState = this.setLoginState.bind(this)
-		this.response = this.response.bind(this)
+		this.loginResponse = this.loginResponse.bind(this)
+		this.newUserResponse = this.newUserResponse.bind(this)
+		this.switchToCreateAccount = this.switchToCreateAccount.bind(this)
+		this.switchToLogin = this.switchToLogin.bind(this)
 		this.setStripeKey = this.setStripeKey.bind(this)
 		this.refreshStripeSources = this.refreshStripeSources.bind(this)
 		this.signOut = this.signOut.bind(this)
@@ -53,8 +61,16 @@ class AppreciateCo extends FormClass {
 		})
 	}
 
-	response = (res) => {
-		if (typeof res.data.userData !== 'undefined') {
+	switchToCreateAccount() {
+		this.setState({ login: false, newUser: true })
+	}
+
+	switchToLogin() {
+		this.setState({ login: true, newUser: false })
+	}
+
+	loginResponse(res) {
+		if (res.data.userData) {
 			sessionStorage.setItem(
 				process.env.USER_DATA_LABEL,
 				JSON.stringify(res.data.userData)
@@ -67,12 +83,21 @@ class AppreciateCo extends FormClass {
 				isLoggedIn: true
 			})
 		}
-		if (typeof res.error !== 'undefined') {
+		if (res.error) {
 			console.error('submit error: ', res.error)
 		}
 	}
 
-	setStripeKey = () => {
+	newUserResponse(res) {
+		if (res.data.success) {
+			this.setState({ userNotify: res.data.userNotify })
+		}
+		if (res.data.error) {
+			console.error('submit error: ', res.error)
+		}
+	}
+
+	setStripeKey() {
 		if (process.env.NODE_ENV === 'production') {
 			this.stripeKey = process.env.STRIPE_PUB_KEY
 		} else {
@@ -113,19 +138,23 @@ class AppreciateCo extends FormClass {
 								/>
 							</StripeProvider>
 						</EB>
-					) : (
-						<div id='sign-in'>
-							<p className='formTitle'>Sign In</p>
-							{/* prettier-ignore */}
-							<form onSubmit={this.rfa_onSubmit} >
-                  <Input name="email" label="Email" value={this.state.email} onChange={this.rfa_onChange} autoComplete={true}/>
-                  <Input name="password" label="Password" value={this.state.password} onChange={this.rfa_onChange} />
-                  <div className="rfa_button-div">
-                    <Button id="submit" value="Sign In" />
-                  </div>
-              </form>
-						</div>
-					)}
+					) : null}
+					{this.state.login ? (
+						<>
+							<Login
+								response={this.loginResponse}
+								switchToCreateAccount={this.switchToCreateAccount}
+							/>
+						</>
+					) : null}
+					{this.state.newUser ? (
+						<>
+							<NewUser
+								response={this.newUserResponse}
+								switchToLogin={this.switchToLogin}
+							/>
+						</>
+					) : null}
 				</div>
 			</div>
 		)

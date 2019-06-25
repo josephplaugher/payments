@@ -12,7 +12,7 @@ routes.post('/login', (req, res) => {
 
 routes.post('/newUser', (req, res) => {
 	const User = new NewUser(req, res)
-	User.create()
+	User.checkUser()
 })
 
 routes.get('/refreshStripeSources', (req, res) => {
