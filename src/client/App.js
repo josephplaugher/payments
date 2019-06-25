@@ -7,6 +7,7 @@ import EB from 'Util/EB'
 import checkLoginState from 'Util/CheckLoginState'
 import Home from './mainmenu/Home'
 import { StripeProvider } from 'react-stripe-elements'
+import Logo from './AppreciateLogo.png'
 
 import 'css/main.css'
 import 'css/form.css'
@@ -86,7 +87,6 @@ class AppreciateCo extends FormClass {
 	}
 
 	signOut() {
-		console.log('sign out')
 		sessionStorage.removeItem(process.env.USER_DATA_LABEL)
 		sessionStorage.removeItem(process.env.TOKEN_NAME)
 		this.setState({
@@ -100,7 +100,7 @@ class AppreciateCo extends FormClass {
 		return (
 			<div id='container'>
 				<div id='logoBox'>
-					<img src={SetUrl() + '/AppreciateLogo.png'} alt='Appreciate Logo' />
+					<img src={Logo} alt='Appreciate Logo' />
 				</div>
 				<div>
 					{this.state.isLoggedIn ? (
