@@ -25,9 +25,9 @@ class AppreciateCo extends FormClass {
 		this.state = {
 			error: null,
 			userNotify: {},
-			isLoggedIn: true,
+			isLoggedIn: false,
 			newUser: false,
-			login: false,
+			login: true,
 			userData: {},
 			email: '',
 			password: ''

@@ -9,7 +9,7 @@
 		"build": "npm run build:prod && npm run start-server:prod",
 		"build:dev": "webpack --config webpack-dev.config.js",
 		"build:prod": "webpack -p --config webpack-prod.config",
-		"start-server:dev": "nodemon src/server/index",
+		"start-server:dev": "NODE_ENV=development nodemon src/server/index",
 		"start-server:prod": "NODE_ENV=production pm2 start ./src/server/index.js"
 	},
 	"dependencies": {
